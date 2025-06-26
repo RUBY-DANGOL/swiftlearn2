@@ -483,6 +483,151 @@ For a circle of radius **r**:
 3. Calculate the ideal banking angle for a highway curve of radius 100 m if the designated speed is 25 m/s.
 `;
 
+export const heatAndTemperatureNotes = `
+# Chapter: Heat and Temperature
+## 1. Introduction
+Heat and temperature are fundamental to understanding how energy moves and how we quantify the “hotness” of a body. While related, they are distinct concepts:
+
+- **Heat** is energy in transit due to a temperature difference.
+- **Temperature** measures the average kinetic energy of particles in a substance.
+
+## 2. Temperature Scales
+- **Celsius (°C):** Water freezes at 0 °C, boils at 100 °C.
+- **Kelvin (K):** Absolute scale; 0 K (absolute zero) is –273.15 °C.
+- **Fahrenheit (°F):** Used chiefly in the United States (32 °F freeze, 212 °F boil).
+
+### Conversion:
+- T(K) = T(°C) + 273.15
+- T(°F) = (9/5) * T(°C) + 32
+
+## 3. Heat vs. Temperature
+- **Heat (Q):** Measured in joules (J); flows from hot to cold.
+- **Temperature (T):** Measured in kelvins or degrees; tells us direction of heat flow.
+
+## 4. Thermal Equilibrium & Zeroth Law
+If A is in thermal equilibrium with B, and B with C, then A is with C. This underpins the concept of temperature.
+
+## 5. Practice Questions
+1. Convert 25 °C to K and °F.
+2. Two objects at 80 °C and 30 °C come into contact. In which direction does heat flow?
+3. If a temperature reads 300 K, what is it in °C and °F?
+`;
+
+export const thermalExpansionNotes = `
+# Chapter: Thermal Expansion
+## 1. Introduction
+When a material is heated, its dimensions change. This is thermal expansion, crucial in engineering (bridges, rails, thermometers).
+
+## 2. Linear Expansion
+ΔL = α * L₀ * ΔT
+Where:
+- **L₀**: original length
+- **ΔL**: change in length
+- **ΔT**: temperature change
+- **α**: coefficient of linear expansion (1/K)
+
+## 3. Area and Volume Expansion
+- **Area expansion:** ΔA = 2α * A₀ * ΔT
+- **Volume expansion:** ΔV = β * V₀ * ΔT, where β ≈ 3α (β is the volume-expansion coefficient).
+
+## 4. Applications & Problems
+- Gaps in railway tracks
+- Bimetallic strips in thermostats
+
+## 5. Practice Questions
+1. A 2 m steel rod (α = 1.2 × 10⁻⁵ K⁻¹) is heated from 20 °C to 120 °C. Find its new length.
+2. Explain why cracks form in sidewalks in summer.
+`;
+
+export const quantityOfHeatNotes = `
+# Chapter: Quantity of Heat
+## 1. Introduction
+The quantity of heat Q absorbed or released by a substance when its temperature changes is given by:
+
+Q = m * c * ΔT
+Where:
+- **m**: mass (kg)
+- **c**: specific heat capacity (J/kg·K)
+- **ΔT**: temperature change (K)
+
+## 2. Specific Heat Capacity
+The energy required to raise 1 kg of a substance by 1 K. Values vary (water: 4186 J/kg·K, aluminum: 900 J/kg·K).
+
+## 3. Phase Changes (Latent Heat)
+When changing phase at constant temperature:
+
+Q = m * L
+Where:
+- **L**: latent heat (J/kg)
+- **L_f**: Latent heat of Fusion (melting)
+- **L_v**: Latent heat of Vaporization
+
+## 4. Practice Questions
+1. How much heat to raise 0.5 kg of water from 20 °C to 80 °C?
+2. Calculate energy to melt 0.2 kg of ice at 0 °C (L_f = 3.34 × 10⁵ J/kg).
+`;
+
+export const rateOfHeatFlowNotes = `
+# Chapter: Rate of Heat Flow (Conduction)
+## 1. Introduction
+Heat flows from hot to cold by conduction, convection, or radiation. Here we focus on conduction through solids.
+
+## 2. Fourier’s Law of Conduction
+Q̇ = -k * A * (dT/dx)
+Where:
+- **Q̇**: heat current (W)
+- **k**: thermal conductivity (W/m·K)
+- **A**: cross-sectional area
+- **dT/dx**: temperature gradient
+
+For a slab of thickness L between temperatures T₁ and T₂:
+Q̇ = k * A * (T₁ - T₂) / L
+
+## 3. Series and Parallel Layers
+- **Series:** Add thermal resistances: R_th = Σ(L_i / (k_i * A)), then Q̇ = ΔT / R_th
+- **Parallel:** Conductances add.
+
+## 4. Practice Questions
+1. Calculate heat flow through a 0.02 m thick glass pane (k = 0.8 W/m·K), area 1 m², T_in = 20°C, T_out = –5°C.
+2. Two layers (brick + insulation) in series—calculate net heat loss.
+`;
+
+export const idealGasNotes = `
+# Chapter: Ideal Gas
+## 1. Ideal Gas Law
+An ideal gas obeys:
+PV = nRT
+Where:
+- **P**: pressure (Pa)
+- **V**: volume (m³)
+- **n**: amount (mol)
+- **R**: gas constant (8.314 J/mol·K)
+- **T**: absolute temperature (K)
+
+## 2. Other Forms
+- **PV = NkT** where N = number of molecules, k = Boltzmann’s constant.
+- Using Molar mass M: m = nM, so **PV = (m/M)RT**.
+
+## 3. Kinetic Theory Relation
+P = (1/3) * ρ * v²‾
+Where:
+- **ρ**: density (kg/m³)
+- **v²‾**: mean square speed of molecules
+
+## 4. Thermodynamic Processes
+- **Isothermal:** T = constant, so PV = constant
+- **Isobaric:** P = constant, so V/T = constant
+- **Isochoric:** V = constant, so P/T = constant
+- **Adiabatic:** no heat exchange, PV^γ = constant (where γ = C_p/C_v)
+
+Work done by gas in a quasi-static process:
+W = ∫ from V_i to V_f of P dV
+
+## 5. Practice Questions
+1. A 2.0 mol gas at 300 K occupies 0.05 m³. Find its pressure.
+2. Sketch PV diagrams for isothermal and adiabatic expansions.
+3. For a monoatomic ideal gas, γ = 5/3; show that TV^(2/3) = constant in an adiabatic process.
+`;
 
 export const grade11NotesMap: Record<string, { notes: string; quizQuestions: number }> = {
   'physical-quantities': {
@@ -515,6 +660,26 @@ export const grade11NotesMap: Record<string, { notes: string; quizQuestions: num
   },
   'circular-motion': {
     notes: circularMotionNotes,
+    quizQuestions: 50,
+  },
+  'heat-and-temperature': {
+    notes: heatAndTemperatureNotes,
+    quizQuestions: 50,
+  },
+  'thermal-expansion': {
+    notes: thermalExpansionNotes,
+    quizQuestions: 50,
+  },
+  'quantity-of-heat': {
+    notes: quantityOfHeatNotes,
+    quizQuestions: 50,
+  },
+  'rate-of-heat-flow': {
+    notes: rateOfHeatFlowNotes,
+    quizQuestions: 50,
+  },
+  'ideal-gas': {
+    notes: idealGasNotes,
     quizQuestions: 50,
   },
 };
