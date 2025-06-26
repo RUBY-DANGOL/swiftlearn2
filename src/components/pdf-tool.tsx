@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Loader2, Send, Wand2, Upload } from 'lucide-react';
+import { Loader2, Send, Wand2, Upload, Lightbulb } from 'lucide-react';
 import { summarizePdf } from '@/ai/flows/pdf-summarization';
 import { pdfChatbot } from '@/ai/flows/pdf-chatbot';
+import { classifyDocument } from '@/ai/flows/document-classifier';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -13,6 +14,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from './ui/separator';
 import { Form, FormControl, FormField, FormItem } from './ui/form';
+import { Badge } from './ui/badge';
 
 type ChatMessage = {
   role: 'user' | 'bot';
@@ -38,6 +40,8 @@ export function PdfTool() {
   const [isChatting, setIsChatting] = useState(false);
   const [pdfDataUri, setPdfDataUri] = useState('');
   const [fileName, setFileName] = useState('');
+  const [classification, setClassification] = useState('');
+  const [isClassifying, setIsClassifying] = useState(false);
 
   const chatForm = useForm({ defaultValues: { message: '' } });
 
@@ -55,16 +59,22 @@ export function PdfTool() {
       setFileName(file.name);
       setSummary('');
       setChatHistory([]);
+      setClassification('');
+      setIsClassifying(true);
       try {
         const dataUri = await fileToDataUri(file);
         setPdfDataUri(dataUri);
+        const result = await classifyDocument({ pdfDataUri: dataUri });
+        setClassification(result.subject);
       } catch (error) {
         console.error(error);
         toast({
             variant: 'destructive',
             title: 'Error',
-            description: 'Failed to read the file.',
+            description: 'Failed to read or classify the file.',
         });
+      } finally {
+        setIsClassifying(false);
       }
     }
   };
@@ -112,8 +122,8 @@ export function PdfTool() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>PDF Document Summarizer</CardTitle>
-        <CardDescription>Upload a PDF to get a summary and start a chat session.</CardDescription>
+        <CardTitle>PDF Document Tool</CardTitle>
+        <CardDescription>Upload a PDF to classify its subject, get a summary, and start a chat session.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex items-start gap-2">
@@ -127,6 +137,26 @@ export function PdfTool() {
             <span className="ml-2 hidden sm:inline">Summarize</span>
           </Button>
         </div>
+
+        {(isClassifying || classification) && (
+            <div className="mt-4">
+                {isClassifying ? (
+                    <div className="flex items-center gap-2 text-muted-foreground p-3">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <p>Classifying document...</p>
+                    </div>
+                ) : (
+                  classification && (
+                    <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                        <Lightbulb className="w-5 h-5 text-primary"/>
+                        <p className="text-sm text-foreground">
+                            This document seems to be about: <Badge variant="secondary" className="font-semibold">{classification}</Badge>
+                        </p>
+                    </div>
+                  )
+                )}
+            </div>
+        )}
         
         {(isSummarizing || summary) && <Separator className="my-6" />}
 
