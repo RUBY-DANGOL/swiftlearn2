@@ -186,6 +186,97 @@ Unit: J/m³.
 4. How does temperature affect the elasticity of a metal rod?
 `;
 
+export const gravitationNotes = `
+# Chapter: Gravitation
+
+## 1. Introduction
+Gravitation is the force of attraction that exists between any two masses. It governs the motion of planets, stars, galaxies, and even objects on Earth. Understanding gravitation lays the foundation for classical mechanics, astronomy, and space science.
+
+## 2. Newton’s Law of Universal Gravitation
+Every point mass attracts every other point mass with a force that:
+- Is directly proportional to the product of their masses.
+- Is inversely proportional to the square of the distance between them.
+
+Mathematically:
+**F = G * (m1 * m2) / r^2**
+Where:
+- **F**: Gravitational force (N)
+- **m1, m2**: Masses (kg)
+- **r**: Distance between centers (m)
+- **G**: Universal gravitational constant (6.674 x 10^-11 m^3 kg^-1 s^-2)
+
+## 3. Gravitational Field and Field Strength
+- **Gravitational Field (g):** A region of space around a mass where another mass experiences a force.
+- **Field Strength (g):** Force per unit mass at a point in the field.
+
+**g = F / m  =>  g = G * M / r^2**
+- **Direction:** Toward the mass M.
+- **Unit:** N/kg (equivalent to m/s²).
+
+## 4. Gravitational Potential and Potential Energy
+- **Potential (ϕ):** Work done per unit mass to bring a test mass from infinity to a point in the field.
+
+**ϕ = -G * M / r**
+(Negative because work is done by the field.)
+- **Unit:** J/kg.
+
+- **Potential Energy (U):** Work done to assemble a system of masses from infinity. For two masses:
+
+**U = -G * (m1 * m2) / r**
+- **Unit:** J.
+
+## 5. Acceleration Due to Gravity on Earth
+Near Earth’s surface (r ≈ R_earth):
+
+**g = G * M_earth / R_earth^2 ≈ 9.81 m/s^2**
+This value can vary slightly with altitude and latitude.
+
+## 6. Motion under Gravity
+### 6.1 Free Fall
+An object released from rest accelerates downward at 'g'.
+Equations of motion:
+- **v = g * t**
+- **s = (1/2) * g * t^2**
+
+### 6.2 Projectile Motion
+Horizontal and vertical motions are independent.
+- Vertical motion under 'g'.
+- Horizontal motion at constant velocity.
+
+## 7. Orbits and Kepler’s Laws
+Objects bound by gravity move in conic sections (circles, ellipses, parabolas, hyperbolas). For planets around the Sun, elliptical orbits apply.
+
+- **Kepler’s First Law:** Planets move in ellipses with the Sun at one focus.
+- **Kepler’s Second Law:** A line connecting a planet to the Sun sweeps out equal areas in equal intervals of time.
+- **Kepler’s Third Law:** T^2 is proportional to a^3, where T = orbital period, a = semi-major axis.
+
+Combining with Newton’s gravitation gives:
+**T^2 = (4 * π^2 / (G * M)) * a^3**
+
+## 8. Escape Velocity
+Minimum speed needed to escape from a planet’s gravitational field without further propulsion:
+**v_esc = sqrt(2 * G * M / R)**
+For Earth: v_esc ≈ 11.2 km/s.
+
+## 9. Gravitational Effects in Astrophysics
+- **Tides:** Differential gravity on near and far sides of Earth causes ocean tides.
+- **Black Holes:** Regions where escape velocity exceeds the speed of light.
+- **Galactic Rotation:** Evidence for dark matter from rotation curves.
+
+## 10. Summary
+- Gravitation is a universal attractive force between masses.
+- It follows an inverse-square law with constant G.
+- It defines fields (g), potentials (ϕ), and energy (U).
+- It governs free-fall, projectile motion, and orbital dynamics.
+- Key concepts include Kepler’s laws, escape velocity, and tidal effects.
+
+## 11. Practice Questions
+1. Calculate the gravitational force between Earth (6.0 x 10^24 kg) and a 70 kg person standing on its surface.
+2. Derive the expression for orbital speed 'v' of a satellite in a circular orbit of radius 'r'.
+3. Find the gravitational potential energy of two 1 kg masses 0.5 m apart.
+4. Explain why tides occur twice each day on Earth.
+`;
+
 export const grade11NotesMap: Record<string, { notes: string; quizQuestions: number }> = {
   'physical-quantities': {
     notes: physicalQuantitiesNotes,
@@ -194,5 +285,9 @@ export const grade11NotesMap: Record<string, { notes: string; quizQuestions: num
   'elasticity': {
     notes: elasticityNotes,
     quizQuestions: 50,
-  }
+  },
+  'gravitation': {
+    notes: gravitationNotes,
+    quizQuestions: 50,
+  },
 };
