@@ -976,6 +976,135 @@ A real battery has an electromotive force (EMF or ε) and an internal resistance
 `;
 
 
+export const nuclearPhysicsNotes = `
+# Chapter: Nuclear Physics
+## 1. Introduction
+Nuclear physics studies the components and behavior of atomic nuclei: protons and neutrons bound by the strong nuclear force. It underpins applications from energy generation to medical imaging.
+
+## 2. Structure of the Nucleus
+- **Nucleons:** Protons (charge +1 e) and neutrons (neutral).
+- **Nuclear radius:** Roughly R = R₀A¹/³ with R₀ ≈ 1.2 fm and mass number A.
+- **Binding energy:** Energy required to disassemble a nucleus into its nucleons.
+  B = [Zmₚ + (A - Z)mₙ - mₙᵤ𝒸ₗₑᵤₛ]c²
+
+## 3. Radioactivity
+| Decay Type | Symbol | Process | Penetration |
+|---|---|---|---|
+| Alpha decay | α | Emission of ₂⁴He | Low (stopped by paper) |
+| Beta-minus decay | β⁻ | n → p + e⁻ + ν̅ₑ | Medium (stopped by aluminium) |
+| Beta-plus decay | β⁺ | p → n + e⁺ + νₑ | Medium |
+| Gamma decay | γ | Emission of high-energy photon | High (requires lead) |
+
+- **Half-life T₁/₂:** Time for half the nuclei to decay.
+  N(t) = N₀e⁻ˡᵗ, T₁/₂ = (ln 2) / λ.
+
+## 4. Nuclear Reactions and Energy
+- **Fission:** Heavy nucleus splits into lighter fragments, releasing energy.
+- **Fusion:** Light nuclei combine, releasing even more energy (e.g., in the Sun).
+- **Q-value:** Net energy released.
+  Q = (mass_initial - mass_final)c².
+
+## 5. Applications
+- Nuclear power reactors (controlled fission chain-reactions).
+- Medical isotopes (PET scans, cancer therapy).
+- Radiocarbon dating (using ¹⁴C half-life).
+
+## 6. Practice Questions
+1. Calculate the binding energy per nucleon for ⁵⁶Fe given masses.
+2. A sample of ³²P (T₁/₂ = 14.3 days) has activity 1000 Bq. What will its activity be after one week?
+3. Determine the Q-value for the fission of ²³⁵U into ⁹²Kr and ¹⁴¹Ba.
+`;
+
+export const solidsNotes = `
+# Chapter: Solids
+## 1. Introduction
+Solid-state physics examines the properties of materials in the solid phase, focusing on atomic arrangement and how it gives rise to electrical, thermal, and mechanical behavior.
+
+## 2. Crystal Structures
+| Lattice Type | Atoms per Cell | Examples |
+|---|---|---|
+| Simple cubic (SC) | 1 | Polonium |
+| Body-centered cubic (BCC) | 2 | Iron (α-Fe), chromium |
+| Face-centered cubic (FCC) | 4 | Aluminum, copper |
+
+- **Lattice constant a:** Edge length of unit cell.
+- **Packing fraction:** Fraction of volume occupied by atoms.
+
+## 3. Interatomic Bonding
+- **Ionic:** Electron transfer, strong Coulomb attraction (e.g. NaCl).
+- **Covalent:** Electron sharing (e.g. diamond, Si).
+- **Metallic:** Delocalized electrons (“sea of electrons”).
+- **Van der Waals:** Weak induced dipole attractions (e.g. noble gases).
+
+## 4. Mechanical Properties
+- **Elasticity:** Described by Young’s modulus, shear modulus, bulk modulus (see “Elasticity” chapter).
+- **Plasticity & Yielding:** Permanent deformation once stress exceeds yield strength.
+- **Dislocations:** Line defects enabling plastic flow.
+
+## 5. Electrical Properties
+- **Conductors:** Many free electrons (metals).
+- **Insulators:** Large band gap between valence/conduction bands.
+- **Semiconductors:** Moderate band gap; conductivity tunable by doping.
+  σ = nqμ
+  where n = carrier density, q charge, μ mobility.
+
+## 6. Thermal Properties
+- **Heat capacity:** Dulong–Petit law approximation Cᵥ ≈ 3R per mole for many solids at room temperature.
+- **Thermal conductivity:** Phonon and electron contributions.
+
+## 7. Applications
+- Electronic devices: Transistors, diodes (semiconductor crystals).
+- Structural materials: Steel alloys, composite materials.
+- Optical materials: Quartz, sapphire, photonic crystals.
+
+## 8. Practice Questions
+1. For FCC copper (a = 0.361 nm), calculate the atomic packing fraction.
+2. Explain why doping silicon with phosphorus increases its conductivity.
+3. Estimate the molar heat capacity of aluminum using Dulong–Petit law.
+`;
+
+export const recentTrendsInPhysicsNotes = `
+# Chapter: Recent Trends in Physics
+## 1. Introduction
+Modern physics is rapidly evolving. Key frontiers include quantum technologies, advanced materials, and interdisciplinary applications.
+
+## 2. Quantum Information & Computing
+- Qubits leverage superposition & entanglement to process information in ways classical computers cannot.
+- Quantum supremacy demonstrated by specialized processors solving certain tasks faster than supercomputers.
+
+## 3. Topological Materials
+- Topological insulators conduct on their surfaces but insulate in the bulk.
+- Protected edge states lead to robust electronic properties, potential for low-power electronics.
+
+## 4. Two-Dimensional Materials
+- **Graphene:** Single-layer carbon with exceptional strength, conductivity, and flexibility.
+- **Transition metal dichalcogenides (TMDCs):** Semiconducting monolayers (e.g. MoS₂) with direct band gaps.
+
+## 5. Gravitational Waves & Multi-Messenger Astronomy
+- LIGO/Virgo detect ripples in spacetime from black-hole and neutron-star mergers.
+- Multi-messenger: Combining gravitational, electromagnetic, and neutrino signals for a fuller picture of cosmic events.
+
+## 6. Dark Matter & Dark Energy
+- **Dark matter:** Inferred from galaxy rotation curves and gravitational lensing but not yet directly detected.
+- **Dark energy:** Causes acceleration of the universe’s expansion; accounts for ~68% of cosmic energy.
+
+## 7. Ultrafast and High-Field Physics
+- Attosecond lasers probe electron dynamics in real time.
+- High-intensity lasers create extreme fields for exploring novel states of matter (e.g. quark-gluon plasma).
+
+## 8. Applications & Industry Impact
+- Quantum sensors for ultra-precise measurements in navigation, geology, and medicine.
+- 2D materials in flexible electronics, sensors, and energy storage.
+- Laser-driven fusion research for clean energy.
+
+## 9. Practice & Discussion Questions
+1. Describe how entanglement differs from classical correlation and its role in quantum computing.
+2. What experimental signatures indicate the presence of a topological insulator?
+3. Explain why dark energy implies a negative pressure in the cosmological equations.
+4. Outline the principle of a gravitational-wave interferometer and the challenges in detecting signals.
+`;
+
+
 export const grade11NotesMap: Record<string, { notes: string; quizQuestions: number }> = {
   'physical-quantities': {
     notes: physicalQuantitiesNotes,
@@ -1067,6 +1196,18 @@ export const grade11NotesMap: Record<string, { notes: string; quizQuestions: num
   },
   'dc-circuits': {
     notes: dcCircuitsNotes,
+    quizQuestions: 50,
+  },
+  'nuclear-physics': {
+    notes: nuclearPhysicsNotes,
+    quizQuestions: 50,
+  },
+  'solids': {
+    notes: solidsNotes,
+    quizQuestions: 50,
+  },
+  'recent-trends-in-physics': {
+    notes: recentTrendsInPhysicsNotes,
     quizQuestions: 50,
   },
 };
