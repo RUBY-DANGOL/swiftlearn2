@@ -36,12 +36,11 @@ export function PdfTool() {
   const { toast } = useToast();
   const [summary, setSummary] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
-  const [isSummarizing, setIsSummarizing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isChatting, setIsChatting] = useState(false);
   const [pdfDataUri, setPdfDataUri] = useState('');
   const [fileName, setFileName] = useState('');
   const [classification, setClassification] = useState('');
-  const [isClassifying, setIsClassifying] = useState(false);
 
   const chatForm = useForm({ defaultValues: { message: '' } });
 
@@ -60,42 +59,30 @@ export function PdfTool() {
       setSummary('');
       setChatHistory([]);
       setClassification('');
-      setIsClassifying(true);
+      setIsProcessing(true);
+      
       try {
         const dataUri = await fileToDataUri(file);
         setPdfDataUri(dataUri);
-        const result = await classifyDocument({ pdfDataUri: dataUri });
-        setClassification(result.subject);
+
+        const [classificationResult, summaryResult] = await Promise.all([
+          classifyDocument({ pdfDataUri: dataUri }),
+          summarizePdf({ pdfDataUri: dataUri }),
+        ]);
+
+        setClassification(classificationResult.subject);
+        setSummary(summaryResult.summary);
+        setChatHistory([{ role: 'bot', content: "I've summarized the PDF for you. Ask me anything about it!" }]);
       } catch (error) {
         console.error(error);
         toast({
             variant: 'destructive',
             title: 'Error',
-            description: 'Failed to read or classify the file.',
+            description: 'Failed to process the PDF file.',
         });
       } finally {
-        setIsClassifying(false);
+        setIsProcessing(false);
       }
-    }
-  };
-
-  const handleSummarize = async () => {
-    if (!pdfDataUri) {
-        toast({ variant: 'destructive', title: 'No File', description: 'Please upload a PDF file first.' });
-        return;
-    }
-    setIsSummarizing(true);
-    setSummary('');
-    setChatHistory([]);
-    try {
-      const result = await summarizePdf({ pdfDataUri });
-      setSummary(result.summary);
-      setChatHistory([{ role: 'bot', content: "I've summarized the PDF for you. Ask me anything about it!" }]);
-    } catch (error) {
-      console.error(error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Failed to summarize the PDF.' });
-    } finally {
-      setIsSummarizing(false);
     }
   };
 
@@ -129,45 +116,32 @@ export function PdfTool() {
         <div className="flex items-start gap-2">
           <div className="flex-grow">
             <label htmlFor="pdf-upload" className="sr-only">Upload PDF</label>
-            <Input id="pdf-upload" type="file" accept="application/pdf" onChange={handleFileChange} className="pt-2 text-sm text-muted-foreground" />
+            <Input id="pdf-upload" type="file" accept="application/pdf" onChange={handleFileChange} disabled={isProcessing} className="pt-2 text-sm text-muted-foreground" />
             {fileName && <p className="text-xs text-muted-foreground mt-1">File: {fileName}</p>}
           </div>
-          <Button onClick={handleSummarize} disabled={isSummarizing || !pdfDataUri}>
-            {isSummarizing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
-            <span className="ml-2 hidden sm:inline">Summarize</span>
-          </Button>
         </div>
 
-        {(isClassifying || classification) && (
-            <div className="mt-4">
-                {isClassifying ? (
-                    <div className="flex items-center gap-2 text-muted-foreground p-3">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <p>Classifying document...</p>
-                    </div>
-                ) : (
-                  classification && (
-                    <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
-                        <Lightbulb className="w-5 h-5 text-primary"/>
-                        <p className="text-sm text-foreground">
-                            This document seems to be about: <Badge variant="secondary" className="font-semibold">{classification}</Badge>
-                        </p>
-                    </div>
-                  )
-                )}
+        {isProcessing && (
+            <div className="mt-6 flex flex-col items-center justify-center gap-2">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-muted-foreground">Analyzing document... please wait.</p>
             </div>
         )}
         
-        {(isSummarizing || summary) && <Separator className="my-6" />}
-
-        {isSummarizing && (
-          <div className="flex flex-col items-center justify-center gap-2">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-muted-foreground">Summarizing document... please wait.</p>
+        {classification && !isProcessing && (
+          <div className="mt-4">
+              <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                  <Lightbulb className="w-5 h-5 text-primary"/>
+                  <p className="text-sm text-foreground">
+                      This document seems to be about: <Badge variant="secondary" className="font-semibold">{classification}</Badge>
+                  </p>
+              </div>
           </div>
         )}
+        
+        {(summary || classification) && !isProcessing && <Separator className="my-6" />}
 
-        {summary && (
+        {summary && !isProcessing && (
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold mb-2">Summary</h3>
@@ -206,12 +180,12 @@ export function PdfTool() {
                       render={({ field }) => (
                         <FormItem className="flex-grow">
                           <FormControl>
-                            <Input placeholder="Ask a follow-up question..." {...field} disabled={isChatting} autoComplete="off" />
+                            <Input placeholder="Ask a follow-up question..." {...field} disabled={isChatting || isProcessing} autoComplete="off" />
                           </FormControl>
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" size="icon" disabled={isChatting}>
+                    <Button type="submit" size="icon" disabled={isChatting || isProcessing}>
                       <Send className="h-4 w-4" />
                     </Button>
                   </form>
