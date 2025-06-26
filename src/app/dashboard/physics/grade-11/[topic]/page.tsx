@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, MessageCircle, HelpCircle, History, FlaskConical, Atom } from 'lucide-react';
-import { physicalQuantitiesNotes } from '@/lib/physics-notes';
+import { grade11NotesMap } from '@/lib/physics-notes';
 import { ContextualChatbot } from '@/components/contextual-chatbot';
 import { Quiz } from '@/components/quiz';
 import ReactMarkdown from 'react-markdown';
@@ -41,8 +41,7 @@ export default function Grade11TopicPage() {
     const params = useParams();
     const topicSlug = params.topic as string;
     const topicName = findTopicName(topicSlug);
-
-    const isPhysicalQuantities = topicSlug === 'physical-quantities';
+    const topicContent = grade11NotesMap[topicSlug];
 
     return (
         <Card>
@@ -64,7 +63,7 @@ export default function Grade11TopicPage() {
                     </TabsList>
                     
                     <TabsContent value="notes">
-                        {isPhysicalQuantities ? (
+                        {topicContent ? (
                             <Card className="mt-6">
                                 <CardContent className="p-0">
                                     <ScrollArea className="h-[70vh] rounded-md">
@@ -74,7 +73,7 @@ export default function Grade11TopicPage() {
                                             remarkPlugins={[remarkGfm]}
                                             rehypePlugins={[rehypeRaw]}
                                         >
-                                            {physicalQuantitiesNotes}
+                                            {topicContent.notes}
                                         </ReactMarkdown>
                                         </div>
                                     </ScrollArea>
@@ -86,9 +85,9 @@ export default function Grade11TopicPage() {
                     </TabsContent>
                     
                     <TabsContent value="chatbot">
-                        {isPhysicalQuantities ? (
+                        {topicContent ? (
                              <div className="mt-6">
-                                <ContextualChatbot context={physicalQuantitiesNotes} />
+                                <ContextualChatbot context={topicContent.notes} />
                             </div>
                         ) : (
                             <PlaceholderContent title="Chatbot Coming Soon" description={`An interactive chatbot to help you with ${topicName} will be here.`} />
@@ -96,9 +95,9 @@ export default function Grade11TopicPage() {
                     </TabsContent>
 
                     <TabsContent value="quiz">
-                        {isPhysicalQuantities ? (
+                        {topicContent ? (
                             <div className="mt-6">
-                                <Quiz context={physicalQuantitiesNotes} numberOfQuestions={50} />
+                                <Quiz context={topicContent.notes} numberOfQuestions={topicContent.quizQuestions} />
                             </div>
                         ) : (
                             <PlaceholderContent title="Quiz Coming Soon" description={`Test your knowledge on ${topicName} with our upcoming quiz.`} />

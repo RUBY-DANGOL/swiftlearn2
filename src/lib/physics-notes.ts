@@ -16,15 +16,15 @@ A physical quantity is a property of a physical system that can be quantified by
 ### 3.1 Fundamental (Base) Quantities
 These are quantities chosen by convention, independent of other quantities. In the International System of Units (SI), there are seven:
 
-| Quantity                  | Symbol | SI Unit  | Unit Symbol |
-|---------------------------|:------:|----------|:-----------:|
-| Length                    | l      | meter    | m           |
-| Mass                      | m      | kilogram | kg          |
-| Time                      | t      | second   | s           |
-| Electric current          | I      | ampere   | A           |
-| Thermodynamic temperature | T      | kelvin   | K           |
-| Amount of substance       | n      | mole     | mol         |
-| Luminous intensity        | Iᵥ     | candela  | cd          |
+| Quantity | Symbol | SI Unit | Unit Symbol |
+|---|---|---|---|
+| Length | l | meter | m |
+| Mass | m | kilogram | kg |
+| Time | t | second | s |
+| Electric current | I | ampere | A |
+| Thermodynamic temperature | T | kelvin | K |
+| Amount of substance | n | mole | mol |
+| Luminous intensity | Iᵥ | candela | cd |
 
 ### 3.2 Derived Quantities
 Derived quantities are defined in terms of base quantities through mathematical relations. For example:
@@ -75,9 +75,9 @@ Rules:
 **Example:** 0.00420 m has three significant figures (4, 2, and the trailing 0).
 
 ## 8. Scalar and Vector Quantities
-| Type   | Definition              | Examples                                       |
-|--------|-------------------------|------------------------------------------------|
-| Scalar | Magnitude only          | temperature (30 °C), mass (2 kg)               |
+| Type | Definition | Examples |
+|---|---|---|
+| Scalar | Magnitude only | temperature (30 °C), mass (2 kg) |
 | Vector | Magnitude and direction | displacement (5 m east), force (10 N downward) |
 
 Vector addition via the parallelogram rule or component-wise (e.g., A⃗ + B⃗ = (Aₓ + Bₓ)ı̂ + (Aᵧ + Bᵧ)ȷ̂).
@@ -101,8 +101,98 @@ Since each term is [L], the equation is dimensionally valid.
 - Quantities can be scalars or vectors, and equations must pass dimensional analysis.
 
 ## 11. Practice Questions
-1.  Classify the following as scalar or vector: volume, velocity, energy, acceleration.
-2.  A car travels 120 km in 2 h. Calculate its average speed and express with correct significant figures.
-3.  Verify dimensional consistency of the formula for kinetic energy: K = ½mv².
-4.  Explain one method to reduce random errors in timing experiments using a stopwatch.
+1. Classify the following as scalar or vector: volume, velocity, energy, acceleration.
+2. A car travels 120 km in 2 h. Calculate its average speed and express with correct significant figures.
+3. Verify dimensional consistency of the formula for kinetic energy: K = ½mv².
+4. Explain one method to reduce random errors in timing experiments using a stopwatch.
 `;
+
+export const elasticityNotes = `
+# Chapter: Elasticity
+
+## 1. Introduction
+Elasticity is the property of a material that enables it to regain its original shape and size after the removal of deforming forces. It is a fundamental concept in mechanics, crucial for understanding how solids respond to stretching, compressing, and shearing.
+
+## 2. Stress and Strain
+**Stress (σ):** Internal force per unit area resisting deformation.
+σ = F/A
+where F = applied force, A = cross-sectional area.
+Unit: pascal (Pa) = N/m².
+
+**Strain (ε):** Measure of deformation, defined as the change in dimension divided by original dimension.
+ε = ΔL / L₀
+where ΔL = change in length, L₀ = original length.
+Strain is dimensionless.
+
+## 3. Hooke’s Law
+For many materials under small deformations, stress is proportional to strain:
+σ = Eε
+E = Young’s modulus (modulus of elasticity in tension/compression).
+
+Valid up to the elastic limit—beyond which permanent (plastic) deformation occurs.
+
+## 4. Types of Elastic Moduli
+| Modulus | Definition | Formula | Units |
+|---|---|---|---|
+| Young’s modulus E | Tensile (or compressive) elasticity | E = σ/ε | Pa |
+| Bulk modulus K | Volumetric elasticity (resistance to uniform compression) | K = -V(dP/dV) ≈ ΔP / (ΔV/V) | Pa |
+| Shear modulus G | Elasticity under shear forces | G = τ/γ | Pa |
+
+*τ = shear stress; γ = shear strain (angular deformation).*
+
+## 5. Stress–Strain Curve
+A typical curve for a ductile material under tension:
+- **Proportional Limit:** End of purely linear (Hookean) behavior.
+- **Elastic Limit:** Maximum stress for which material returns fully on unloading.
+- **Yield Point:** Onset of plastic (permanent) deformation.
+- **Ultimate Tensile Strength:** Maximum stress sustained.
+- **Fracture Point:** Material breaks.
+
+**Key regions:**
+- **OA:** Linear (σ ∝ ε).
+- **AB:** Yielding with little increase in stress.
+- **BC:** Strain hardening.
+- **CD:** Necking leading to failure.
+
+## 6. Energy Stored (Strain Energy)
+Area under the stress–strain curve up to ε:
+U = ∫₀^ε σ dε
+
+For linear region:
+U = (1/2) * σ * ε = (1/2) * E * ε²
+Unit: J/m³.
+
+## 7. Factors Affecting Elasticity
+- **Material Type:** Metals, polymers, ceramics differ widely in E, G, K.
+- **Temperature:** Generally, E decreases with increasing temperature.
+- **Impurities/Alloying:** Alloy composition can strengthen (increase E) or embrittle.
+
+## 8. Applications
+- **Springs:** Designed using Hooke’s law (F = kx, where spring constant k = EA/L).
+- **Structural Engineering:** Beams and columns rely on known moduli for deflection calculations.
+- **Acoustics:** Bulk modulus governs speed of sound in materials (v = √(K/ρ)).
+
+## 9. Summary
+- Elastic behavior: Reversible deformation under load.
+- Stress & strain: Quantify internal force and deformation.
+- Hooke’s law: Linear relation up to elastic limit.
+- Elastic moduli: E, G, and K describe resistance to tension, shear, and compression.
+- Energy storage: Area under stress–strain curve.
+
+## 10. Practice Questions
+1. A wire of length 2 m and cross-section 1 mm² stretches by 0.5 mm under a load of 100 N. Calculate its Young’s modulus.
+2. Explain the difference between elastic limit and yield point.
+3. Derive the expression for strain energy per unit volume in a material obeying Hooke’s law.
+4. How does temperature affect the elasticity of a metal rod?
+`;
+
+export const grade11NotesMap: Record<string, { notes: string; quizQuestions: number }> = {
+  'physical-quantities': {
+    notes: physicalQuantitiesNotes,
+    quizQuestions: 50,
+  },
+  'elasticity': {
+    notes: elasticityNotes,
+    quizQuestions: 50,
+  }
+};
