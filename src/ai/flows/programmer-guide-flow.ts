@@ -1,9 +1,9 @@
 'use server';
 
 /**
- * @fileOverview An AI flow to act as a programming guide for coding challenges.
+ * @fileOverview An AI flow to act as a programming guide for C++ coding challenges.
  *
- * - programmerGuide - A function that helps users with coding challenges.
+ * - programmerGuide - A function that helps users with C++ coding challenges.
  * - ProgrammerGuideInput - The input type for the programmerGuide function.
  * - ProgrammerGuideOutput - The return type for the programmerGuide function.
  */
@@ -14,8 +14,7 @@ import {z} from 'genkit';
 const ProgrammerGuideInputSchema = z.object({
   challengeTitle: z.string().describe('The title of the coding challenge.'),
   challengeDescription: z.string().describe('The detailed description of the coding challenge.'),
-  language: z.string().describe('The programming language the user is working in (e.g., C++).'),
-  userCode: z.string().describe("The user's current code solution."),
+  userCode: z.string().describe("The user's current C++ code solution."),
   userQuestion: z.string().describe('The specific question the user is asking for help with.'),
 });
 export type ProgrammerGuideInput = z.infer<typeof ProgrammerGuideInputSchema>;
@@ -38,11 +37,11 @@ const prompt = ai.definePrompt({
 **The Challenge:**
 - **Title:** {{{challengeTitle}}}
 - **Description:** {{{challengeDescription}}}
-- **Language:** {{{language}}}
+- **Language:** C++
 
 **The Student's Attempt:**
 - **Code:**
-\`\`\`{{{language}}}
+\`\`\`cpp
 {{{userCode}}}
 \`\`\`
 - **Question:** "{{{userQuestion}}}"
@@ -55,7 +54,7 @@ const prompt = ai.definePrompt({
 5.  **Be Encouraging:** Maintain a supportive and friendly tone.
 
 **Example Response:**
-"Great question! It looks like you're on the right track. For the 'Two Sum' problem, think about how you can check for the complement of each number. A hash map could be really useful here to store numbers you've already seen. Does that give you an idea for the next step?"
+"Great question! It looks like you're on the right track. For the 'Two Sum' problem, think about how you can check for the complement of each number. A hash map (like \`std::unordered_map\`) could be really useful here to store numbers you've already seen. Does that give you an idea for the next step?"
 
 Provide a single, concise paragraph of guidance.`,
 });
