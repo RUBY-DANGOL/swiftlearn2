@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Rocket } from 'lucide-react';
+import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,10 +14,13 @@ import { Input } from '@/components/ui/input';
 import type { LoginSchema } from '@/lib/schemas';
 import { loginSchema } from '@/lib/schemas';
 import { useToast } from '@/hooks/use-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 export function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const [language, setLanguage] = React.useState('en');
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -32,7 +36,8 @@ export function LoginForm() {
       title: 'Login Successful',
       description: 'Welcome back!',
     });
-    router.push('/dashboard');
+    const dashboardPath = language === 'ne' ? '/dashboard-nepali' : '/dashboard';
+    router.push(dashboardPath);
   };
 
   return (
@@ -47,6 +52,18 @@ export function LoginForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-2">
+              <FormLabel>Language</FormLabel>
+              <Select value={language} onValueChange={setLanguage}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="ne">नेपाली (Nepali)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <FormField
               control={form.control}
               name="email"
