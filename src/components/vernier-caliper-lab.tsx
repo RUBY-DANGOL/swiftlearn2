@@ -10,78 +10,68 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 // Least count of the vernier caliper
-const LEAST_COUNT = 0.05;
+const LEAST_COUNT = 0.02;
 
 // Preset objects to measure
 const PRESET_OBJECTS: Record<string, { name: string; size: number }> = {
-  'sphere_small': { name: 'Small Marble', size: 12.35 },
-  'sphere_large': { name: 'Large Bearing', size: 25.05 },
-  'cylinder': { name: 'Cylinder', size: 30.80 },
-  'block': { name: 'Small Block', size: 42.15 },
-  'rod': { name: 'Thin Rod', size: 5.55 },
+  'sphere_small': { name: 'Small Marble', size: 12.36 },
+  'sphere_large': { name: 'Large Bearing', size: 25.04 },
+  'cylinder': { name: 'Cylinder', size: 30.88 },
+  'block': { name: 'Small Block', size: 42.16 },
+  'rod': { name: 'Thin Rod', size: 5.54 },
 };
 const objectKeys = Object.keys(PRESET_OBJECTS);
 
-const CaliperSVG = ({ measurement, objectName }: { measurement: number; objectName: string; }) => {
-    const scale = 12; // pixels per mm
-    const mainScaleHeight = 40;
+const CaliperSVG = ({ measurement }: { measurement: number }) => {
+    const scale = 10; // pixels per mm
+    const mainScaleHeight = 50;
     const vernierScaleHeight = 35;
-    const jawHeight = 50;
     const viewboxWidth = 1200;
-    const viewboxHeight = mainScaleHeight + vernierScaleHeight + jawHeight;
-
-    const mainScalePosition = measurement * scale;
+    const viewboxHeight = mainScaleHeight + vernierScaleHeight + 50;
+    const sliderOffset = measurement * scale;
 
     const mainTicks = [];
-    for (let i = 0; i <= 95; i++) {
+    for (let i = 0; i <= 100; i++) {
         const x = i * scale;
-        let tickHeight = 6;
+        let tickHeight = 7;
         if (i % 10 === 0) {
-            tickHeight = 18;
-            mainTicks.push(<text key={`label-${i}`} x={x - (i > 9 ? 6 : 3)} y={22} fontSize="12" fontWeight="bold" fill="currentColor">{i / 10}</text>);
+            tickHeight = 15;
+            mainTicks.push(<text key={`label-${i}`} x={x} y={mainScaleHeight - tickHeight - 4} fontSize="14" fontWeight="bold" fill="currentColor" textAnchor="middle">{i}</text>);
         } else if (i % 5 === 0) {
-            tickHeight = 12;
+            tickHeight = 11;
         }
         mainTicks.push(<line key={`tick-${i}`} x1={x} y1={mainScaleHeight - tickHeight} x2={x} y2={mainScaleHeight} stroke="currentColor" strokeWidth="1" />);
     }
 
     const vernierTicks = [];
-    for (let i = 0; i <= 20; i++) {
-        const x = i * 0.95 * scale;
-        let tickHeight = 6;
+    // 50 divisions on vernier scale, spanning 49mm on main scale. 1 VSD = 0.98mm.
+    for (let i = 0; i <= 50; i++) {
+        const x = i * 0.98 * scale;
+        let tickHeight = 7;
         if (i % 5 === 0) {
             tickHeight = 12;
-            if (i > 0 && i < 20) {
-                vernierTicks.push(<text key={`vlabel-${i}`} x={mainScalePosition + x - 4} y={mainScaleHeight + vernierScaleHeight - 15} fontSize="10" fill="currentColor">{i}</text>);
-            }
+            vernierTicks.push(<text key={`vlabel-${i}`} x={x} y={mainScaleHeight + tickHeight + 14} fontSize="12" fontWeight="bold" fill="currentColor" textAnchor="middle">{i / 5}</text>);
         }
-        vernierTicks.push(<line key={`vtick-${i}`} x1={mainScalePosition + x} y1={mainScaleHeight} x2={mainScalePosition + x} y2={mainScaleHeight + tickHeight} stroke="currentColor" strokeWidth="1" />);
+        vernierTicks.push(<line key={`vtick-${i}`} x1={x} y1={mainScaleHeight} x2={x} y2={mainScaleHeight + tickHeight} stroke="currentColor" strokeWidth="1" />);
     }
 
     return (
         <svg viewBox={`0 0 ${viewboxWidth} ${viewboxHeight}`} className="w-full h-auto min-w-[800px]" preserveAspectRatio="xMidYMid meet">
-            {/* Main Scale Body */}
-            <rect x="0" y="0" width="1150" height={mainScaleHeight} fill="hsl(var(--muted))" />
-            <path d={`M 0 ${mainScaleHeight} L 0 ${mainScaleHeight + jawHeight} L -10 ${mainScaleHeight + jawHeight} L -10 ${mainScaleHeight - 5} Z`} fill="hsl(var(--muted))" stroke="hsl(var(--border))" />
-
-            {/* Main Scale Ticks */}
-            {mainTicks}
-            <text x="500" y="15" fontSize="12" fill="currentColor" textAnchor="middle">Main Scale (cm)</text>
-
-            {/* Sliding Jaw + Vernier Scale */}
+            {/* Main Scale */}
             <g>
-                {/* Body */}
-                <rect x={mainScalePosition} y={mainScaleHeight} width={19 * scale} height={vernierScaleHeight} fill="hsl(var(--muted))" />
-                <path d={`M ${mainScalePosition} ${mainScaleHeight} L ${mainScalePosition} ${mainScaleHeight + jawHeight} L ${mainScalePosition + 10} ${mainScaleHeight + jawHeight} L ${mainScalePosition + 10} ${mainScaleHeight} Z`} fill="hsl(var(--muted))" stroke="hsl(var(--border))" />
-
-                {/* Vernier Ticks */}
-                {vernierTicks}
-                <text x={mainScalePosition + (19 * scale / 2)} y={mainScaleHeight + vernierScaleHeight - 2} fontSize="10" fill="currentColor" textAnchor="middle">Least Count: 0.05 mm</text>
+                <path d={`M-30 ${mainScaleHeight+40} L -30 0 L 1050 0 L 1050 ${mainScaleHeight} L 0 ${mainScaleHeight} L 0 ${mainScaleHeight+40} Z`} fill="none" stroke="currentColor" strokeWidth="1.5" />
+                {mainTicks}
             </g>
 
-            {/* Object */}
-            <circle cx={mainScalePosition / 2} cy={mainScaleHeight + jawHeight / 2} r={mainScalePosition / 2} fill="hsl(var(--primary))" opacity="0.7" />
-            <text x={mainScalePosition / 2} y={mainScaleHeight + jawHeight / 2 + 5} fontSize="12" fill="white" textAnchor="middle">{objectName}</text>
+            {/* Sliding Jaw + Vernier Scale */}
+            <g transform={`translate(${sliderOffset}, 0)`}>
+                <path d={`M-20 ${mainScaleHeight+40} L-20 ${mainScaleHeight-10} L0 ${mainScaleHeight-10} L0 0 L500 0 L500 ${vernierScaleHeight} L30 ${vernierScaleHeight} L30 ${mainScaleHeight+80} L-20 ${mainScaleHeight+80} Z`} fill="none" stroke="currentColor" strokeWidth="1.5" />
+                {vernierTicks}
+                <text x={49 * scale / 2} y={mainScaleHeight + vernierScaleHeight + 5} fontSize="10" fill="currentColor" textAnchor="middle">.02 mm</text>
+                 {/* Arrow */}
+                <path d="M 0 -15 L -5 -25 L 5 -25 Z" fill="currentColor" />
+                <line x1="0" y1="-15" x2="0" y2="-5" stroke="currentColor" strokeWidth="2" />
+            </g>
         </svg>
     );
 };
@@ -117,10 +107,10 @@ export function VernierCaliperLab() {
     }
 
     const generateNewChallenge = useCallback(() => {
-        const randomIndex = Math.floor(Math.random() * objectKeys.length);
-        const randomKey = objectKeys[randomIndex];
+        const otherKeys = objectKeys.filter(k => k !== currentObjectKey);
+        const randomKey = otherKeys[Math.floor(Math.random() * otherKeys.length)];
         resetState(randomKey);
-    }, []);
+    }, [currentObjectKey]);
     
     useEffect(() => {
        resetState(objectKeys[0]);
@@ -149,11 +139,11 @@ export function VernierCaliperLab() {
             <Card>
                 <CardHeader>
                     <CardTitle>Virtual Lab: Reading a Vernier Caliper</CardTitle>
-                    <CardDescription>An object is placed in the caliper. Determine its measurement by reading the main and vernier scales.</CardDescription>
+                    <CardDescription>An object's measurement is shown on the caliper. Determine the reading by inspecting the main and vernier scales.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="w-full bg-card p-4 rounded-lg border overflow-x-auto">
-                        <CaliperSVG measurement={objectSize} objectName={currentObject.name} />
+                    <div className="w-full bg-blue-900 text-white p-4 rounded-lg border overflow-x-auto">
+                        <CaliperSVG measurement={objectSize} />
                     </div>
                 </CardContent>
             </Card>
@@ -166,9 +156,9 @@ export function VernierCaliperLab() {
                     <CardContent>
                         <ol className="list-decimal list-inside space-y-3 text-sm text-muted-foreground">
                             <li><b>Read Main Scale:</b> Find the whole millimeter mark on the main scale just to the left of the vernier scale's '0'.</li>
-                            <li><b>Find Matching Division:</b> Look for the one line on the vernier scale (0-20) that aligns perfectly with any line on the main scale.</li>
+                            <li><b>Find Matching Division:</b> Look for the one line on the vernier scale (0-50) that aligns perfectly with any line on the main scale.</li>
                             <li><b>Calculate Total:</b> The final reading is: <br />
-                                <code className="font-code text-primary p-1 rounded bg-muted">Main Reading + (Matching Division × 0.05)</code></li>
+                                <code className="font-code text-primary p-1 rounded bg-muted">Main Reading + (Matching Division × 0.02)</code></li>
                         </ol>
                     </CardContent>
                 </Card>
@@ -196,8 +186,8 @@ export function VernierCaliperLab() {
                             <Input id="main-scale-input" type="number" placeholder="e.g., 12" value={mainScaleInput} onChange={e => setMainScaleInput(e.target.value)} disabled={isSubmitted} />
                         </div>
                         <div>
-                            <Label htmlFor="vernier-division-input">Matching Vernier Division (0-20)</Label>
-                            <Input id="vernier-division-input" type="number" placeholder="e.g., 7" value={vernierDivisionInput} onChange={e => setVernierDivisionInput(e.target.value)} disabled={isSubmitted} />
+                            <Label htmlFor="vernier-division-input">Matching Vernier Division (0-50)</Label>
+                            <Input id="vernier-division-input" type="number" placeholder="e.g., 18" value={vernierDivisionInput} onChange={e => setVernierDivisionInput(e.target.value)} disabled={isSubmitted} />
                         </div>
                         <div className="flex gap-2 pt-2">
                             <Button onClick={handleCheck} className="w-full" disabled={isSubmitted}>Check Answer</Button>
