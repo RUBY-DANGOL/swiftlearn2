@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, MessageCircle, HelpCircle, History, FlaskConical, Atom } from 'lucide-react';
+import { NoteExtractor } from '@/components/note-extractor';
 
 const grade11Syllabus = [
   { unit: "Unit 1: Mechanics", topics: [{ name: "Physical quantities", slug: "physical-quantities" }, { name: "Vectors", slug: "vectors" }, { name: "Kinematics", slug: "kinematics" }, { name: "Dynamics", slug: "dynamics" }, { name: "Work, energy and power", slug: "work-energy-and-power" }, { name: "Circular motion", slug: "circular-motion" }, { name: "Gravitation", slug: "gravitation" }, { name: "Elasticity", slug: "elasticity" }] },
@@ -54,7 +55,7 @@ export default function Grade11TopicPage() {
                         <TabsTrigger value="lab" className="gap-2"><FlaskConical className="h-4 w-4" /> Lab</TabsTrigger>
                     </TabsList>
                     <TabsContent value="notes">
-                        <PlaceholderContent title="Notes Coming Soon" description={`Detailed notes for ${topicName} will be available here.`} />
+                        <NoteExtractor topicName={topicName} />
                     </TabsContent>
                     <TabsContent value="chatbot">
                         <PlaceholderContent title="Chatbot Coming Soon" description={`An interactive chatbot to help you with ${topicName} will be here.`} />
