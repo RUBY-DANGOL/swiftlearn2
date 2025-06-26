@@ -1,44 +1,51 @@
 'use server';
 
 /**
- * @fileOverview Provides an AI-powered math question solver.
+ * @fileOverview An AI flow to solve math problems from an uploaded image or PDF.
  *
- * - mathQuestionSolver - A function that accepts a math question and returns a step-by-step solution.
- * - MathQuestionSolverInput - The input type for the mathQuestionSolver function.
- * - MathQuestionSolverOutput - The return type for the mathQuestionSolver function.
+ * - solveMathProblem - A function that solves a math problem from a media file.
+ * - SolveMathProblemInput - The input type for the solveMathProblem function.
+ * - SolveMathProblemOutput - The return type for the solveMathProblem function.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-const MathQuestionSolverInputSchema = z.object({
-  question: z.string().describe('The math question to be solved.'),
+const SolveMathProblemInputSchema = z.object({
+  mediaDataUri: z
+    .string()
+    .describe(
+      "An image or PDF of a math problem, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+    ),
 });
-export type MathQuestionSolverInput = z.infer<typeof MathQuestionSolverInputSchema>;
+export type SolveMathProblemInput = z.infer<typeof SolveMathProblemInputSchema>;
 
-const MathQuestionSolverOutputSchema = z.object({
-  solution: z.string().describe('The step-by-step solution to the math question.'),
+const SolveMathProblemOutputSchema = z.object({
+  solution: z.string().describe('The step-by-step solution to the math problem, formatted in Markdown.'),
 });
-export type MathQuestionSolverOutput = z.infer<typeof MathQuestionSolverOutputSchema>;
+export type SolveMathProblemOutput = z.infer<typeof SolveMathProblemOutputSchema>;
 
-export async function mathQuestionSolver(input: MathQuestionSolverInput): Promise<MathQuestionSolverOutput> {
-  return mathQuestionSolverFlow(input);
+export async function solveMathProblem(input: SolveMathProblemInput): Promise<SolveMathProblemOutput> {
+  return solveMathProblemFlow(input);
 }
 
 const prompt = ai.definePrompt({
-  name: 'mathQuestionSolverPrompt',
-  input: {schema: MathQuestionSolverInputSchema},
-  output: {schema: MathQuestionSolverOutputSchema},
-  prompt: `You are an expert math tutor. Provide a step-by-step solution to the following math question, explaining the reasoning behind each step.
+  name: 'solveMathProblemPrompt',
+  input: {schema: SolveMathProblemInputSchema},
+  output: {schema: SolveMathProblemOutputSchema},
+  prompt: `You are an expert math tutor. Your task is to solve the math problem presented in the provided image or document.
 
-Question: {{{question}}}`,
+  Provide a detailed, step-by-step solution. Explain the reasoning behind each step clearly. Format your final answer using Markdown, including LaTeX for mathematical expressions (e.g., use $...$ for inline math and $$...$$ for block math).
+
+  Problem:
+  {{media url=mediaDataUri}}`,
 });
 
-const mathQuestionSolverFlow = ai.defineFlow(
+const solveMathProblemFlow = ai.defineFlow(
   {
-    name: 'mathQuestionSolverFlow',
-    inputSchema: MathQuestionSolverInputSchema,
-    outputSchema: MathQuestionSolverOutputSchema,
+    name: 'solveMathProblemFlow',
+    inputSchema: SolveMathProblemInputSchema,
+    outputSchema: SolveMathProblemOutputSchema,
   },
   async input => {
     const {output} = await prompt(input);
