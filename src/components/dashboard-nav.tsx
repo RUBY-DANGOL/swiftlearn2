@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/sidebar';
 
 const navItems = [
-  { href: '/dashboard', label: 'Home', icon: Home },
+  { href: '/dashboard', label: 'Home', icon: Home, exact: true },
   { href: '/dashboard/physics', label: 'Physics', icon: Atom },
   { href: '/dashboard/chemistry', label: 'Chemistry', icon: FlaskConical },
   { href: '/dashboard/biology', label: 'Biology', icon: Dna },
@@ -31,11 +31,15 @@ export function DashboardNav() {
 
   return (
     <SidebarMenu>
-      {navItems.map((item) => (
+      {navItems.map((item) => {
+        const isActive = item.exact
+          ? pathname === item.href
+          : pathname.startsWith(item.href);
+        return (
         <SidebarMenuItem key={item.href} className="mx-2">
           <Link href={item.href} legacyBehavior passHref>
             <SidebarMenuButton
-              isActive={pathname === item.href}
+              isActive={isActive}
               tooltip={item.label}
               className="font-medium"
             >
@@ -44,7 +48,8 @@ export function DashboardNav() {
             </SidebarMenuButton>
           </Link>
         </SidebarMenuItem>
-      ))}
+        )
+      })}
     </SidebarMenu>
   );
 }
