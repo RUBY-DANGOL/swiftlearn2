@@ -4,6 +4,13 @@ import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, MessageCircle, HelpCircle, History, FlaskConical, Atom } from 'lucide-react';
+import { physicalQuantitiesNotes } from '@/lib/physics-notes';
+import { ContextualChatbot } from '@/components/contextual-chatbot';
+import { Quiz } from '@/components/quiz';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const grade11Syllabus = [
   { unit: "Unit 1: Mechanics", topics: [{ name: "Physical quantities", slug: "physical-quantities" }, { name: "Vectors", slug: "vectors" }, { name: "Kinematics", slug: "kinematics" }, { name: "Dynamics", slug: "dynamics" }, { name: "Work, energy and power", slug: "work-energy-and-power" }, { name: "Circular motion", slug: "circular-motion" }, { name: "Gravitation", slug: "gravitation" }, { name: "Elasticity", slug: "elasticity" }] },
@@ -35,6 +42,8 @@ export default function Grade11TopicPage() {
     const topicSlug = params.topic as string;
     const topicName = findTopicName(topicSlug);
 
+    const isPhysicalQuantities = topicSlug === 'physical-quantities';
+
     return (
         <Card>
             <CardHeader>
@@ -53,18 +62,53 @@ export default function Grade11TopicPage() {
                         <TabsTrigger value="past-questions" className="gap-2"><History className="h-4 w-4" /> Past Questions</TabsTrigger>
                         <TabsTrigger value="lab" className="gap-2"><FlaskConical className="h-4 w-4" /> Lab</TabsTrigger>
                     </TabsList>
+                    
                     <TabsContent value="notes">
-                        <PlaceholderContent title="Notes Coming Soon" description={`Notes for ${topicName} will be available here.`} />
+                        {isPhysicalQuantities ? (
+                            <Card className="mt-6">
+                                <CardContent className="p-0">
+                                    <ScrollArea className="h-[70vh] rounded-md">
+                                        <div className="p-6">
+                                        <ReactMarkdown
+                                            className="prose prose-sm dark:prose-invert max-w-none"
+                                            remarkPlugins={[remarkGfm]}
+                                            rehypePlugins={[rehypeRaw]}
+                                        >
+                                            {physicalQuantitiesNotes}
+                                        </ReactMarkdown>
+                                        </div>
+                                    </ScrollArea>
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <PlaceholderContent title="Notes Coming Soon" description={`Notes for ${topicName} will be available here.`} />
+                        )}
                     </TabsContent>
+                    
                     <TabsContent value="chatbot">
-                        <PlaceholderContent title="Chatbot Coming Soon" description={`An interactive chatbot to help you with ${topicName} will be here.`} />
+                        {isPhysicalQuantities ? (
+                             <div className="mt-6">
+                                <ContextualChatbot context={physicalQuantitiesNotes} />
+                            </div>
+                        ) : (
+                            <PlaceholderContent title="Chatbot Coming Soon" description={`An interactive chatbot to help you with ${topicName} will be here.`} />
+                        )}
                     </TabsContent>
+
                     <TabsContent value="quiz">
-                        <PlaceholderContent title="Quiz Coming Soon" description={`Test your knowledge on ${topicName} with our upcoming quiz.`} />
+                        {isPhysicalQuantities ? (
+                            <div className="mt-6">
+                                <Quiz context={physicalQuantitiesNotes} numberOfQuestions={50} />
+                            </div>
+                        ) : (
+                            <PlaceholderContent title="Quiz Coming Soon" description={`Test your knowledge on ${topicName} with our upcoming quiz.`} />
+                        )}
                     </TabsContent>
+
                     <TabsContent value="past-questions">
                         <PlaceholderContent title="Past Questions Coming Soon" description={`Practice with past questions related to ${topicName}.`} />
                     </TabsContent>
+                    
                     <TabsContent value="lab">
                         <PlaceholderContent title="Virtual Lab Coming Soon" description={`Explore interactive experiments for ${topicName} in our virtual lab.`} />
                     </TabsContent>
