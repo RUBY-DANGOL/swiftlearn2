@@ -17,7 +17,7 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { Form, FormControl, FormField, FormItem } from './ui/form';
 import { Input } from './ui/input';
 
-type Language = 'javascript' | 'python' | 'c';
+type Language = 'cpp';
 type ChatMessage = {
   role: 'user' | 'bot';
   content: string;
@@ -26,7 +26,7 @@ type ChatMessage = {
 export function ProgrammingIDE() {
   const { toast } = useToast();
   const [currentChallenge, setCurrentChallenge] = useState<CodingChallenge>(codingChallenges[0]);
-  const [language, setLanguage] = useState<Language>('javascript');
+  const [language, setLanguage] = useState<Language>('cpp');
   const [code, setCode] = useState(currentChallenge.starterCode[language]);
   
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
@@ -36,7 +36,7 @@ export function ProgrammingIDE() {
 
   useEffect(() => {
     setCode(currentChallenge.starterCode[language]);
-    setChatHistory([{ role: 'bot', content: `Hello! I'm your AI guide. How can I help you with the "${currentChallenge.title}" challenge in ${language}?` }]);
+    setChatHistory([{ role: 'bot', content: `Hello! I'm your AI guide. How can I help you with the "${currentChallenge.title}" challenge in C/C++?` }]);
     chatForm.reset();
   }, [currentChallenge, language, chatForm]);
 
@@ -59,7 +59,7 @@ export function ProgrammingIDE() {
       const result = await programmerGuide({
         challengeTitle: currentChallenge.title,
         challengeDescription: currentChallenge.description,
-        language: language,
+        language: 'c++',
         userCode: code,
         userQuestion: values.message,
       });
@@ -111,16 +111,9 @@ export function ProgrammingIDE() {
               <div className="flex items-center gap-4">
                 <CardTitle>Code Editor</CardTitle>
                 <div className="w-48">
-                  <Select value={language} onValueChange={(val: Language) => setLanguage(val)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Language" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="javascript">JavaScript</SelectItem>
-                      <SelectItem value="python">Python</SelectItem>
-                      <SelectItem value="c">C</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm">
+                    Language: C/C++
+                  </div>
                 </div>
               </div>
               <Button onClick={handleRunCode}>

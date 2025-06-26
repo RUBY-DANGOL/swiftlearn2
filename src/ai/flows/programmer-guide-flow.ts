@@ -14,7 +14,7 @@ import {z} from 'genkit';
 const ProgrammerGuideInputSchema = z.object({
   challengeTitle: z.string().describe('The title of the coding challenge.'),
   challengeDescription: z.string().describe('The detailed description of the coding challenge.'),
-  language: z.string().describe('The programming language the user is working in (e.g., JavaScript, Python, C).'),
+  language: z.string().describe('The programming language the user is working in (e.g., C++).'),
   userCode: z.string().describe("The user's current code solution."),
   userQuestion: z.string().describe('The specific question the user is asking for help with.'),
 });
