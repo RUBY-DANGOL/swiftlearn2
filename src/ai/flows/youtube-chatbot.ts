@@ -27,30 +27,18 @@ export async function youtubeChatbot(input: YoutubeChatbotInput): Promise<Youtub
   return youtubeChatbotFlow(input);
 }
 
-const youtubeVideoContentTool = ai.defineTool({
-  name: 'youtubeVideoContentTool',
-  description: 'Retrieves the content of a YouTube video given its URL.',
-  inputSchema: z.object({
-    youtubeVideoUrl: z.string().describe('The URL of the YouTube video.'),
-  }),
-  outputSchema: z.string(),
-},
-async (input) => {
-  // Placeholder implementation:  Assume a service exists to fetch video content.
-  // In a real application, this would call an external service or API.
-  // For now, return a canned response.
-  console.log("Fetching video content from: " + input.youtubeVideoUrl);
-  return `This is the content of the YouTube video at ${input.youtubeVideoUrl}.  It discusses various aspects of the topic, provides examples, and offers further resources.`;
-}
-);
-
 const prompt = ai.definePrompt({
   name: 'youtubeChatbotPrompt',
   input: {schema: YoutubeChatbotInputSchema},
   output: {schema: YoutubeChatbotOutputSchema},
-  tools: [youtubeVideoContentTool],
-  system: `You are a chatbot that answers questions about YouTube videos.  Use the youtubeVideoContentTool to get the content of the video, and then answer the question based on that content.  If you cannot answer the question based on the video content, say so.`,
-  prompt: `Question: {{{question}}}`, // Just ask the question
+  prompt: `You are an expert at answering questions about a YouTube video.
+  
+Use the content of the following YouTube video to answer the user's question.
+Video URL: {{{youtubeVideoUrl}}}
+  
+Question: {{{question}}}
+  
+Answer the question based *only* on the video's content. If the answer is not in the video, say that you cannot find the answer in the video.`,
 });
 
 const youtubeChatbotFlow = ai.defineFlow(
