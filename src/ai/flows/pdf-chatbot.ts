@@ -18,6 +18,7 @@ const PdfChatbotInputSchema = z.object({
       'A PDF document, as a data URI that must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.' // Ensure proper format
     ),
   question: z.string().describe('The question to ask about the PDF document.'),
+  language: z.enum(['en', 'ne']).optional().default('en').describe('The language for the output.'),
 });
 export type PdfChatbotInput = z.infer<typeof PdfChatbotInputSchema>;
 
@@ -30,8 +31,8 @@ export async function pdfChatbot(input: PdfChatbotInput): Promise<PdfChatbotOutp
   return pdfChatbotFlow(input);
 }
 
-const pdfChatbotPrompt = ai.definePrompt({
-  name: 'pdfChatbotPrompt',
+const englishPrompt = ai.definePrompt({
+  name: 'pdfChatbotPromptEn',
   input: {schema: PdfChatbotInputSchema},
   output: {schema: PdfChatbotOutputSchema},
   prompt: `You are a chatbot that answers questions about a PDF document.
@@ -45,6 +46,22 @@ const pdfChatbotPrompt = ai.definePrompt({
   Answer:`,
 });
 
+const nepaliPrompt = ai.definePrompt({
+  name: 'pdfChatbotPromptNe',
+  input: {schema: PdfChatbotInputSchema},
+  output: {schema: PdfChatbotOutputSchema},
+  prompt: `तपाईं एक च्याटबोट हुनुहुन्छ जसले PDF कागजातको बारेमा प्रश्नहरूको उत्तर दिनुहुन्छ।
+
+प्रश्नको उत्तर दिनको लागि निम्न PDF कागजातलाई जानकारीको स्रोतको रूपमा प्रयोग गर्नुहोस्।
+
+PDF कागजात: {{media url=pdfDataUri}}
+
+प्रश्न: {{{question}}}
+
+उत्तर:`,
+});
+
+
 const pdfChatbotFlow = ai.defineFlow(
   {
     name: 'pdfChatbotFlow',
@@ -52,7 +69,11 @@ const pdfChatbotFlow = ai.defineFlow(
     outputSchema: PdfChatbotOutputSchema,
   },
   async input => {
-    const {output} = await pdfChatbotPrompt(input);
+    if (input.language === 'ne') {
+      const {output} = await nepaliPrompt(input);
+      return output!;
+    }
+    const {output} = await englishPrompt(input);
     return output!;
   }
 );

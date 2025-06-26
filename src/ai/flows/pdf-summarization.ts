@@ -17,6 +17,7 @@ const SummarizePdfInputSchema = z.object({
     .describe(
       'The PDF document, as a data URI that must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.' // Corrected the expected format
     ),
+  language: z.enum(['en', 'ne']).optional().default('en').describe('The language for the output.'),
 });
 export type SummarizePdfInput = z.infer<typeof SummarizePdfInputSchema>;
 
@@ -29,13 +30,22 @@ export async function summarizePdf(input: SummarizePdfInput): Promise<SummarizeP
   return summarizePdfFlow(input);
 }
 
-const summarizePdfPrompt = ai.definePrompt({
-  name: 'summarizePdfPrompt',
+const englishPrompt = ai.definePrompt({
+  name: 'summarizePdfPromptEn',
   input: {schema: SummarizePdfInputSchema},
   output: {schema: SummarizePdfOutputSchema},
   prompt: `Summarize the following PDF document. 
 
 PDF Document: {{media url=pdfDataUri}}`,
+});
+
+const nepaliPrompt = ai.definePrompt({
+  name: 'summarizePdfPromptNe',
+  input: {schema: SummarizePdfInputSchema},
+  output: {schema: SummarizePdfOutputSchema},
+  prompt: `निम्न PDF कागजातको सारांश लेख्नुहोस्।
+
+PDF कागजात: {{media url=pdfDataUri}}`,
 });
 
 const summarizePdfFlow = ai.defineFlow(
@@ -45,7 +55,11 @@ const summarizePdfFlow = ai.defineFlow(
     outputSchema: SummarizePdfOutputSchema,
   },
   async input => {
-    const {output} = await summarizePdfPrompt(input);
+    if (input.language === 'ne') {
+      const {output} = await nepaliPrompt(input);
+      return output!;
+    }
+    const {output} = await englishPrompt(input);
     return output!;
   }
 );
