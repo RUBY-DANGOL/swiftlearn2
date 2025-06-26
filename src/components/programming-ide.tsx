@@ -1,195 +1,144 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from './ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { codingChallenges, type CodingChallenge } from '@/lib/coding-challenges';
-import { Loader2, MessageSquare, Play, Send, Terminal } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { programmerGuide } from '@/ai/flows/programmer-guide-flow';
-import { ScrollArea } from './ui/scroll-area';
-import { Avatar, AvatarFallback } from './ui/avatar';
-import { Form, FormControl, FormField, FormItem } from './ui/form';
-import { Input } from './ui/input';
+import { RefreshCw } from 'lucide-react';
 
-type Language = 'cpp';
-type ChatMessage = {
-  role: 'user' | 'bot';
-  content: string;
-};
+const defaultHtml = `<h1>Hello, World!</h1>
+<p>This is a live preview of your code.</p>
+<button onclick="showAlert()">Click Me</button>
+`;
+
+const defaultCss = `body {
+  font-family: sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+}
+
+h1 {
+  color: hsl(var(--primary));
+}
+
+button {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+`;
+
+const defaultJs = `function showAlert() {
+  alert('You clicked the button!');
+}
+`;
 
 export function ProgrammingIDE() {
-  const { toast } = useToast();
-  const [currentChallenge, setCurrentChallenge] = useState<CodingChallenge>(codingChallenges[0]);
-  const [language, setLanguage] = useState<Language>('cpp');
-  const [code, setCode] = useState(currentChallenge.starterCode[language]);
-  
-  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
-  const [isChatting, setIsChatting] = useState(false);
-
-  const chatForm = useForm({ defaultValues: { message: '' } });
+  const [htmlCode, setHtmlCode] = useState(defaultHtml);
+  const [cssCode, setCssCode] = useState(defaultCss);
+  const [jsCode, setJsCode] = useState(defaultJs);
+  const [srcDoc, setSrcDoc] = useState('');
 
   useEffect(() => {
-    setCode(currentChallenge.starterCode[language]);
-    setChatHistory([{ role: 'bot', content: `Hello! I'm your AI guide. How can I help you with the "${currentChallenge.title}" challenge in C/C++?` }]);
-    chatForm.reset();
-  }, [currentChallenge, language, chatForm]);
+    const timeout = setTimeout(() => {
+      setSrcDoc(`
+        <html>
+          <head>
+            <style>${cssCode}</style>
+          </head>
+          <body>
+            ${htmlCode}
+            <script>${jsCode}</script>
+          </body>
+        </html>
+      `);
+    }, 250);
 
-  const handleRunCode = () => {
-    toast({
-      title: 'Compiler Prototype',
-      description: 'Run functionality is not available in this prototype.',
-    });
-  };
+    return () => clearTimeout(timeout);
+  }, [htmlCode, cssCode, jsCode]);
 
-  const handleChatSubmit = async (values: { message: string }) => {
-    if (!values.message.trim()) return;
-
-    const newHumanMessage: ChatMessage = { role: 'user', content: values.message };
-    setChatHistory(prev => [...prev, newHumanMessage]);
-    setIsChatting(true);
-    chatForm.reset();
-
-    try {
-      const result = await programmerGuide({
-        challengeTitle: currentChallenge.title,
-        challengeDescription: currentChallenge.description,
-        language: 'c++',
-        userCode: code,
-        userQuestion: values.message,
-      });
-      const newAiMessage: ChatMessage = { role: 'bot', content: result.guidance };
-      setChatHistory(prev => [...prev, newAiMessage]);
-    } catch (error) {
-      console.error(error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Failed to get a response from the AI guide.' });
-      const newErrorMessage: ChatMessage = { role: 'bot', content: 'Sorry, I encountered an error. Please try again.' };
-      setChatHistory(prev => [...prev, newErrorMessage]);
-    } finally {
-      setIsChatting(false);
-    }
+  const handleReset = () => {
+    setHtmlCode(defaultHtml);
+    setCssCode(defaultCss);
+    setJsCode(defaultJs);
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-      <Card className="lg:sticky lg:top-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start h-[80vh]">
+      <Card className="h-full flex flex-col">
         <CardHeader>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <Label htmlFor="challenge-select" className="shrink-0">Coding Challenge:</Label>
-            <Select
-              value={currentChallenge.id}
-              onValueChange={(id) => setCurrentChallenge(codingChallenges.find(c => c.id === id)!)}
-            >
-              <SelectTrigger id="challenge-select" className="w-full sm:w-auto">
-                <SelectValue placeholder="Select a challenge" />
-              </SelectTrigger>
-              <SelectContent>
-                {codingChallenges.map(challenge => (
-                  <SelectItem key={challenge.id} value={challenge.id}>
-                    {challenge.title} ({challenge.difficulty})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="flex items-center justify-between">
+            <CardTitle>Web Editor</CardTitle>
+            <Button onClick={handleReset} variant="outline" size="sm">
+              <RefreshCw className="h-4 w-4" /> <span className="ml-2">Reset</span>
+            </Button>
           </div>
         </CardHeader>
-        <CardContent>
-          <CardTitle className="text-xl mb-2">{currentChallenge.title}</CardTitle>
-          <CardDescription>{currentChallenge.description}</CardDescription>
+        <CardContent className="flex-grow flex flex-col">
+          <Tabs defaultValue="html" className="w-full flex-grow flex flex-col">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="html">HTML</TabsTrigger>
+              <TabsTrigger value="css">CSS</TabsTrigger>
+              <TabsTrigger value="js">JavaScript</TabsTrigger>
+            </TabsList>
+            <TabsContent value="html" className="flex-grow mt-2">
+              <Textarea
+                value={htmlCode}
+                onChange={(e) => setHtmlCode(e.target.value)}
+                className="font-code h-full text-sm resize-none"
+                placeholder="Write your HTML here..."
+              />
+            </TabsContent>
+            <TabsContent value="css" className="flex-grow mt-2">
+              <Textarea
+                value={cssCode}
+                onChange={(e) => setCssCode(e.target.value)}
+                className="font-code h-full text-sm resize-none"
+                placeholder="Write your CSS here..."
+              />
+            </TabsContent>
+            <TabsContent value="js" className="flex-grow mt-2">
+               <Textarea
+                value={jsCode}
+                onChange={(e) => setJsCode(e.target.value)}
+                className="font-code h-full text-sm resize-none"
+                placeholder="Write your JavaScript here..."
+              />
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
-
-      <div className="flex flex-col gap-6">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <CardTitle>Code Editor</CardTitle>
-                <div className="w-48">
-                  <div className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm">
-                    Language: C/C++
-                  </div>
-                </div>
-              </div>
-              <Button onClick={handleRunCode}>
-                <Play className="h-4 w-4" /> <span className="ml-2">Run</span>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Textarea
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="font-code h-80 text-sm"
-              placeholder="Write your code here..."
+      
+      <Card className="h-full flex flex-col">
+         <CardHeader>
+            <CardTitle>Live Preview</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-grow">
+            <iframe
+                srcDoc={srcDoc}
+                title="Live Preview"
+                sandbox="allow-scripts"
+                frameBorder="0"
+                className="w-full h-full bg-white rounded-md border"
             />
-          </CardContent>
-        </Card>
-        
-        <Tabs defaultValue="output" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="output" className="gap-2"><Terminal className="h-4 w-4" />Output</TabsTrigger>
-            <TabsTrigger value="guide" className="gap-2"><MessageSquare className="h-4 w-4"/>AI Guide</TabsTrigger>
-          </TabsList>
-          <TabsContent value="output">
-             <Card className="mt-2">
-                <CardContent className="p-4">
-                    <pre className="text-sm text-muted-foreground h-96">Click "Run" to see your code's output.</pre>
-                </CardContent>
-             </Card>
-          </TabsContent>
-          <TabsContent value="guide">
-            <Card className="mt-2">
-                <CardContent className="p-4">
-                    <ScrollArea className="h-80 mb-4 pr-4">
-                        <div className="space-y-4">
-                        {chatHistory.map((msg, index) => (
-                            <div key={index} className={`flex items-start gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}>
-                            {msg.role === 'bot' && <Avatar className="w-8 h-8"><AvatarFallback>AI</AvatarFallback></Avatar>}
-                            <p className={`rounded-lg px-4 py-2 max-w-[90%] text-sm ${msg.role === 'bot' ? 'bg-muted' : 'bg-primary text-primary-foreground'}`}>
-                                {msg.content}
-                            </p>
-                            {msg.role === 'user' && <Avatar className="w-8 h-8"><AvatarFallback>You</AvatarFallback></Avatar>}
-                            </div>
-                        ))}
-                        {isChatting && (
-                            <div className="flex items-start gap-3">
-                                <Avatar className="w-8 h-8"><AvatarFallback>AI</AvatarFallback></Avatar>
-                                <p className="rounded-lg px-4 py-2 bg-muted flex items-center gap-2">
-                                    <Loader2 className="h-4 w-4 animate-spin" /> Thinking...
-                                </p>
-                            </div>
-                        )}
-                        </div>
-                    </ScrollArea>
-                    <Form {...chatForm}>
-                    <form onSubmit={chatForm.handleSubmit(handleChatSubmit)} className="flex items-center gap-2">
-                        <FormField
-                        control={chatForm.control}
-                        name="message"
-                        render={({ field }) => (
-                            <FormItem className="flex-grow">
-                            <FormControl>
-                                <Input placeholder="Ask for a hint..." {...field} disabled={isChatting} autoComplete="off" />
-                            </FormControl>
-                            </FormItem>
-                        )}
-                        />
-                        <Button type="submit" size="icon" disabled={isChatting}>
-                        <Send className="h-4 w-4" />
-                        </Button>
-                    </form>
-                    </Form>
-                </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

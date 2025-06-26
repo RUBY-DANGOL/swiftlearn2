@@ -10,4 +10,3 @@ import '@/ai/flows/document-classifier.ts';
 import '@/ai/flows/note-extractor.ts';
 import '@/ai/flows/contextual-chatbot.ts';
 import '@/ai/flows/quiz-generator.ts';
-import '@/ai/flows/programmer-guide-flow.ts';
