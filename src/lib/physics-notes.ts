@@ -629,6 +629,149 @@ W = ∫ from V_i to V_f of P dV
 3. For a monoatomic ideal gas, γ = 5/3; show that TV^(2/3) = constant in an adiabatic process.
 `;
 
+export const reflectionAtCurvedMirrorsNotes = `
+# Chapter: Reflection at Curved Mirrors
+## 1. Introduction
+Curved mirrors—concave and convex—reflect light to form images. They’re used in headlights, telescopes, shaving mirrors, etc.
+
+## 2. Sign Conventions
+- **Object distance (u):** positive if in front of mirror (real object)
+- **Image distance (v):** positive if in front of mirror (real image)
+- **Radius of curvature (R):** positive if center of curvature is in front
+- **Focal length (f):** f = R/2, positive for concave, negative for convex
+
+## 3. Mirror Equation
+1/u + 1/v = 1/f
+
+## 4. Magnification
+m = h_image / h_object = -v / u
+- m > 0: image upright
+- m < 0: image inverted.
+
+## 5. Ray Diagrams (Concave)
+- Parallel ray → passes through focal point after reflection.
+- Focal ray → reflects parallel to principal axis.
+- Center-ray → reflects back on itself.
+- For convex mirrors, rays appear to diverge from the focal point behind the mirror.
+
+## 6. Applications & Significance
+- **Concave:** magnifying, focusing
+- **Convex:** wide-angle viewing, safety mirrors
+
+## 7. Practice Questions
+1. An object 10 cm from a concave mirror of focal length 15 cm—locate the image and its magnification.
+2. A convex mirror forms a virtual image half as tall as the object. What is v/u?
+`;
+
+export const refractionAtPlaneSurfacesNotes = `
+# Chapter: Refraction at Plane Surfaces
+## 1. Introduction
+Refraction is the bending of light as it passes between media of different refractive index (n).
+
+## 2. Snell’s Law
+n₁sin(θ₁) = n₂sin(θ₂)
+θ: angle from the normal.
+
+## 3. Apparent Depth
+An object underwater (n = 1.33) at real depth d appears at depth
+d_apparent = d / n
+
+## 4. Refraction at a Single Plane
+For a surface separating media n₁ and n₂, the object distance u and image distance v (measured from the surface) are related by:
+n₁/u + n₂/v = 0
+(Real images in the second medium have v > 0.)
+
+## 5. Total Internal Reflection
+Occurs when light travels from denser to rarer medium (n₁ > n₂).
+Critical angle θ_c:
+sin(θ_c) = n₂ / n₁
+
+## 6. Practice Questions
+1. A fish 2 m below water surface—how deep does it appear to an observer above?
+2. Find the critical angle for the water–air interface.
+`;
+
+export const refractionThroughPrismsNotes = `
+# Chapter: Refraction Through Prisms
+## 1. Introduction
+Prisms deviate and disperse light. A triangular prism is defined by its refracting angle A.
+
+## 2. Deviation Angle
+Light entering and exiting a prism is deviated by total angle δ. For small angles:
+δ ≈ (n - 1)A
+
+## 3. Exact Relation
+Using geometry and Snell’s law at both faces:
+δ = i₁ + i₂' - A
+where i₁ = angle of incidence, i₂' = angle of emergence.
+
+## 4. Angle of Minimum Deviation (δ_min)
+When the path is symmetric (i₁ = i₂'):
+n = sin((A + δ_min) / 2) / sin(A / 2)
+
+## 5. Dispersion in Prisms
+Different wavelengths refract by different amounts (n(λ)), causing spread of colors.
+
+## 6. Practice Questions
+1. A 60° prism gives δ_min = 40°. Find its refractive index.
+2. Explain why a rainbow appears when sunlight passes through raindrops (treat each drop as a tiny prism).
+`;
+
+export const lensesNotes = `
+# Chapter: Lenses
+## 1. Introduction
+Thin lenses—convex (converging) and concave (diverging)—focus or diverge light.
+
+## 2. Lens Maker’s Formula
+1/f = (n_lens - 1) * (1/R₁ - 1/R₂)
+Radii R₁, R₂ positive if centers on the outgoing side.
+
+## 3. Thin-Lens Equation
+1/u + 1/v = 1/f
+Same sign conventions as mirrors (but f > 0 for convex, f < 0 for concave).
+
+## 4. Magnification
+m = h' / h = -v / u
+
+## 5. Ray Diagrams (Convex Lens)
+- Parallel ray → through focal point on other side.
+- Focal ray → emerges parallel.
+- Central ray → straight through optical center.
+- For concave lenses, rays diverge as if from a virtual focal point.
+
+## 6. Combinations of Lenses
+The effective focal length F for two thin lenses in contact:
+1/F = 1/f₁ + 1/f₂
+
+## 7. Practice Questions
+1. An object 30 cm from a convex lens of focal length 20 cm—determine image position and size.
+2. Two lenses f₁ = 10 cm, f₂ = -15 cm in contact—find combined F.
+`;
+
+export const dispersionNotes = `
+# Chapter: Dispersion
+## 1. Introduction
+Dispersion is the wavelength-dependence of refractive index, causing white light to split into colors.
+
+## 2. Refractive Index vs. Wavelength
+Qualitatively, n decreases as λ increases (normal dispersion).
+
+## 3. Cauchy’s Formula (Approximate)
+n(λ) = A + B/λ² + C/λ⁴
+Constants A, B, C are specific to the material.
+
+## 4. Angular Dispersion
+For a prism, the angular spread between two wavelengths λ₁ and λ₂:
+Δδ = (n(λ₁) - n(λ₂)) * A
+
+## 5. Chromatic Aberration
+Lenses focus different colors at different points, requiring achromatic doublets in cameras and telescopes.
+
+## 6. Practice Questions
+1. Calculate the angular dispersion of a 60° flint-glass prism for red (n = 1.616) and violet (n = 1.643).
+2. Explain how an achromatic lens pair reduces color fringing.
+`;
+
 export const grade11NotesMap: Record<string, { notes: string; quizQuestions: number }> = {
   'physical-quantities': {
     notes: physicalQuantitiesNotes,
@@ -680,6 +823,26 @@ export const grade11NotesMap: Record<string, { notes: string; quizQuestions: num
   },
   'ideal-gas': {
     notes: idealGasNotes,
+    quizQuestions: 50,
+  },
+  'reflection-at-curved-mirror': {
+    notes: reflectionAtCurvedMirrorsNotes,
+    quizQuestions: 50,
+  },
+  'refraction-at-plane-surfaces': {
+    notes: refractionAtPlaneSurfacesNotes,
+    quizQuestions: 50,
+  },
+  'refraction-through-prisms': {
+    notes: refractionThroughPrismsNotes,
+    quizQuestions: 50,
+  },
+  'lenses': {
+    notes: lensesNotes,
+    quizQuestions: 50,
+  },
+  'dispersion': {
+    notes: dispersionNotes,
     quizQuestions: 50,
   },
 };
