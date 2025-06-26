@@ -772,6 +772,210 @@ Lenses focus different colors at different points, requiring achromatic doublets
 2. Explain how an achromatic lens pair reduces color fringing.
 `;
 
+export const electricChargesNotes = `
+# Chapter: Electric Charges
+## 1. Introduction
+Electric charge is a fundamental property of matter that gives rise to electric forces. There are two types of charge: positive and negative. Like charges repel; opposite charges attract.
+
+## 2. Quantization and Conservation
+- **Quantization:** Charge comes in integer multiples of the elementary charge e = 1.602 × 10⁻¹⁹ C.
+- **Conservation:** The total electric charge in an isolated system remains constant.
+
+## 3. Coulomb’s Law
+The electrostatic force between two point charges q₁ and q₂, separated by distance r, is:
+**F = k * |q₁q₂| / r²**
+where k = 1 / (4πε₀) ≈ 8.99 × 10⁹ N·m²/C².
+Direction is along the line joining the charges; it is repulsive if they have the same sign.
+
+## 4. Superposition Principle
+If multiple charges act on a test charge, the net force is the vector sum of the individual forces:
+**F_net = Σ F_i**
+
+## 5. Conduction, Induction, and Charging Methods
+- **Conduction:** Direct contact transfers charge.
+- **Induction:** Bringing a charged object near a conductor causes separation of charges without contact.
+- **Friction:** Rubbing two materials (e.g., amber and wool) can transfer electrons.
+
+## 6. Applications & Phenomena
+- Electrostatic precipitators for pollution control.
+- Lightning: Massive charge separation in clouds leading to discharge.
+
+## 7. Practice Questions
+1. Calculate the force between two +3 μC charges 5 cm apart.
+2. Two charges, +Q and -Q, are 10 cm apart. Where along the line joining them is the net force on a third test charge zero?
+`;
+
+export const electricFieldNotes = `
+# Chapter: Electric Field
+## 1. Introduction
+An electric field E describes the influence a charge exerts on the space around it. A test charge q placed in an electric field E experiences a force F = qE.
+
+## 2. Definition
+The electric field E at a point is the force F per unit charge q on a positive test charge:
+**E = F / q**
+Unit: newton per coulomb (N/C) or volt per meter (V/m).
+
+## 3. Field of a Point Charge
+The electric field from a single point charge q at a distance r is:
+**E = k * q / r²**
+The field is radial, pointing away from a positive charge and toward a negative charge.
+
+## 4. Superposition
+Electric fields from multiple sources add vectorially:
+**E_net = Σ E_i**
+
+## 5. Field Lines
+- Lines originate on positive charges and terminate on negative charges.
+- The density of lines is proportional to the field strength.
+- Field lines never cross.
+
+## 6. Uniform Electric Field
+Between two large, parallel conducting plates with potential difference V separated by distance d, the field is approximately uniform:
+**E ≈ V / d**
+
+## 7. Gauss’s Law (Qualitative)
+The net electric flux through any closed surface is equal to the total charge enclosed by that surface divided by ε₀:
+**Φ_E = ∮ E ⋅ dA = Q_enclosed / ε₀**
+This law is very useful for calculating the electric field for charge distributions with high symmetry.
+
+## 8. Practice Questions
+1. Sketch the electric field lines for (a) an isolated positive point charge, and (b) a pair of equal but opposite charges (an electric dipole).
+2. Find the electric field at a point midway between two equal positive charges +Q separated by a distance 2a.
+`;
+
+export const potentialDifferenceAndEnergyNotes = `
+# Chapter: Electric Potential and Potential Energy
+
+## 1. Electric Potential (V)
+Electric potential is the work done per unit charge in bringing a positive test charge from infinity to a specific point in an electric field.
+**V = W / q**
+Unit: volt (V), where 1 V = 1 J/C.
+
+For a point charge q, the potential at a distance r is:
+**V = k * q / r**
+
+## 2. Potential Difference (ΔV)
+The potential difference between two points A and B is the work done per unit charge to move a charge from A to B.
+**ΔV = V_B - V_A = W_AB / q**
+A positive charge naturally moves from a region of higher potential to lower potential, losing electric potential energy.
+
+## 3. Relation to Electric Field
+The electric field is the negative gradient of the potential.
+**E = -∇V**
+In one dimension, this simplifies to **E_x = -dV/dx**. The field points in the direction of the steepest decrease in potential.
+
+## 4. Equipotential Surfaces
+These are surfaces where the electric potential is constant.
+- No work is done when moving a charge along an equipotential surface.
+- Electric field lines are always perpendicular to equipotential surfaces.
+
+## 5. Electric Potential Energy (U)
+The potential energy of a pair of point charges q₁ and q₂ separated by distance r is:
+**U = k * (q₁q₂) / r**
+The total potential energy of a system of charges is the sum of the energies of all unique pairs.
+
+## 6. Applications
+- **Capacitors:** Store energy in the electric field, given by **U = (1/2)CV²**.
+- **Electron Volt (eV):** A unit of energy equal to the energy gained by an electron moving through a potential difference of 1 V. (1 eV = 1.602 × 10⁻¹⁹ J).
+
+## 7. Practice Questions
+1. Calculate the electric potential at a distance of 0.2 m from a +5 μC point charge.
+2. Two +2 μC charges are held 10 cm apart. Find the electric potential energy of the pair.
+`;
+
+export const capacitorNotes = `
+# Chapter: Capacitors
+## 1. Introduction
+A capacitor is a device used to store electric charge and energy. It consists of two conductors (plates) separated by an insulator (dielectric).
+
+## 2. Capacitance (C)
+Capacitance is the ratio of the charge Q on one conductor to the potential difference V between the conductors.
+**C = Q / V**
+Unit: farad (F), where 1 F = 1 C/V.
+
+## 3. Parallel-Plate Capacitor
+For a capacitor with two parallel plates of area A separated by a distance d in a vacuum:
+**C = ε₀ * A / d**
+If a dielectric material with dielectric constant κ is inserted between the plates:
+**C = κ * ε₀ * A / d = κ * C_vacuum**
+
+## 4. Energy Stored in a Capacitor
+The energy U stored in a charged capacitor is given by:
+**U = (1/2) * Q² / C = (1/2) * CV² = (1/2) * QV**
+
+## 5. Combination of Capacitors
+- **In Series:** The total capacitance is the reciprocal of the sum of the reciprocals.
+  **1/C_eq = 1/C₁ + 1/C₂ + ...**
+  The charge on each capacitor is the same.
+
+- **In Parallel:** The total capacitance is the sum of the individual capacitances.
+  **C_eq = C₁ + C₂ + ...**
+  The voltage across each capacitor is the same.
+
+## 6. Dielectrics
+A dielectric is an insulating material that, when placed in an electric field, becomes polarized. This reduces the net electric field inside the capacitor, allowing it to store more charge at the same voltage, thus increasing its capacitance.
+
+## 7. Applications
+- **Tuning circuits** in radios and TVs.
+- **Energy storage** for flashes in cameras and defibrillators.
+- **Filtering** in power supplies to smooth out voltage.
+
+## 8. Practice Questions
+1. A 10 μF capacitor is charged to a potential difference of 5 V. Calculate the charge on the capacitor and the energy stored in it.
+2. Three capacitors (5 μF, 10 μF, and 20 μF) are connected in series to a 12 V source. Find the equivalent capacitance and the charge on each capacitor.
+`;
+
+export const dcCircuitsNotes = `
+# Chapter: DC Circuits
+## 1. Introduction
+Direct-current (DC) circuits involve the flow of charge in one constant direction. They are fundamental to battery-powered devices and electronics.
+
+## 2. Ohm’s Law
+For many materials (ohmic conductors), the voltage V across them is directly proportional to the current I flowing through them.
+**V = I * R**
+where R is the resistance. Unit: ohm (Ω).
+
+## 3. Resistivity and Resistance
+Resistance R depends on the material's properties and geometry:
+**R = ρ * L / A**
+where:
+- **ρ (rho)** is the resistivity of the material (Ω·m).
+- **L** is the length of the conductor.
+- **A** is the cross-sectional area.
+
+## 4. Electric Power
+Power P is the rate at which energy is dissipated in a circuit component.
+**P = V * I = I² * R = V² / R**
+Unit: watt (W), where 1 W = 1 J/s.
+
+## 5. Resistors in Series and Parallel
+- **Series:** Resistors are connected end-to-end. The current is the same through each. The equivalent resistance is the sum:
+  **R_eq = R₁ + R₂ + ...**
+
+- **Parallel:** Resistors are connected across the same two points. The voltage is the same across each. The equivalent resistance is given by:
+  **1/R_eq = 1/R₁ + 1/R₂ + ...**
+
+## 6. Kirchhoff’s Laws
+For complex circuits, these laws are essential:
+1.  **Junction Rule (Conservation of Charge):** The sum of currents entering any junction must equal the sum of currents leaving that junction.
+    **ΣI_in = ΣI_out**
+2.  **Loop Rule (Conservation of Energy):** The sum of the potential differences (voltages) around any closed loop in a circuit must be zero.
+    **ΣΔV_loop = 0**
+
+## 7. EMF and Internal Resistance
+A real battery has an electromotive force (EMF or ε) and an internal resistance (r). The terminal voltage V_T (the actual voltage supplied) is:
+**V_T = ε - I * r**
+
+## 8. Applications
+- **Voltage Dividers:** Using series resistors to produce a specific output voltage.
+- **Wheatstone Bridge:** A circuit used to accurately measure an unknown resistance.
+
+## 9. Practice Questions
+1. A circuit has a 12 V battery connected to three resistors in series: 2 Ω, 4 Ω, and 6 Ω. Find the total current and the voltage drop across the 4 Ω resistor.
+2. If the same three resistors were connected in parallel to the 12 V battery, what would be the total current drawn from the battery?
+`;
+
+
 export const grade11NotesMap: Record<string, { notes: string; quizQuestions: number }> = {
   'physical-quantities': {
     notes: physicalQuantitiesNotes,
@@ -843,6 +1047,26 @@ export const grade11NotesMap: Record<string, { notes: string; quizQuestions: num
   },
   'dispersion': {
     notes: dispersionNotes,
+    quizQuestions: 50,
+  },
+  'electric-charges': {
+    notes: electricChargesNotes,
+    quizQuestions: 50,
+  },
+  'electric-field': {
+    notes: electricFieldNotes,
+    quizQuestions: 50,
+  },
+  'potential-potential-difference-and-potential-energy': {
+    notes: potentialDifferenceAndEnergyNotes,
+    quizQuestions: 50,
+  },
+  'capacitor': {
+    notes: capacitorNotes,
+    quizQuestions: 50,
+  },
+  'dc-circuits': {
+    notes: dcCircuitsNotes,
     quizQuestions: 50,
   },
 };
