@@ -18,8 +18,15 @@ const YoutubeSummarizationInputSchema = z.object({
 });
 export type YoutubeSummarizationInput = z.infer<typeof YoutubeSummarizationInputSchema>;
 
+const TimecodedExplanationSchema = z.object({
+  timestamp: z.string().describe('The timestamp of the segment in MM:SS or HH:MM:SS format.'),
+  title: z.string().describe('The title of the video segment.'),
+  explanation: z.string().describe('A detailed explanation of the video segment.'),
+});
+
 const YoutubeSummarizationOutputSchema = z.object({
-  summary: z.string().describe('The summary of the YouTube video.'),
+  summary: z.string().describe('A concise, overall summary of the entire YouTube video.'),
+  timecodedExplanations: z.array(TimecodedExplanationSchema).describe('An array of time-coded explanations for key video segments.'),
 });
 export type YoutubeSummarizationOutput = z.infer<typeof YoutubeSummarizationOutputSchema>;
 
@@ -31,7 +38,18 @@ const prompt = ai.definePrompt({
   name: 'youtubeSummarizationPrompt',
   input: {schema: YoutubeSummarizationInputSchema},
   output: {schema: YoutubeSummarizationOutputSchema},
-  prompt: `Summarize the content of the YouTube video from this link: {{{youtubeVideoLink}}}. Provide a concise summary.`, // Keep prompt simple; video content will be passed as tool context in chatbot.
+  prompt: `You are an expert at analyzing and explaining educational YouTube videos. Your goal is to make the video's content easy to understand.
+    
+Analyze the video from this link: {{{youtubeVideoLink}}}.
+
+Your response must have two parts:
+1.  A concise, high-level summary of the entire video.
+2.  A list of the main topics or key moments from the video as time-coded explanations. For each key moment, you must provide:
+    - The exact timestamp where the topic begins (in MM:SS or HH:MM:SS format).
+    - A short, descriptive title for the topic.
+    - A detailed explanation of the concept discussed in that segment.
+    
+Make sure the timestamps are accurate and the explanations are clear and helpful for learning.`,
 });
 
 const youtubeSummarizationFlow = ai.defineFlow(
