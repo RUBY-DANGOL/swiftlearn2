@@ -15,6 +15,7 @@ import {z} from 'genkit';
 const YoutubeChatbotInputSchema = z.object({
   youtubeVideoUrl: z.string().describe('The URL of the YouTube video.'),
   question: z.string().describe('The question to ask about the video.'),
+  topic: z.string().optional().describe('The topic context for the conversation.'),
 });
 export type YoutubeChatbotInput = z.infer<typeof YoutubeChatbotInputSchema>;
 
@@ -31,10 +32,13 @@ const prompt = ai.definePrompt({
   name: 'youtubeChatbotPrompt',
   input: {schema: YoutubeChatbotInputSchema},
   output: {schema: YoutubeChatbotOutputSchema},
-  prompt: `You are an expert at answering questions about a YouTube video.
+  prompt: `You are an expert at answering questions about a YouTube video, with a focus on a specific topic.
   
 Use the content of the following YouTube video to answer the user's question.
 Video URL: {{{youtubeVideoUrl}}}
+{{#if topic}}
+The conversation is about the topic of: **{{{topic}}}**. Please keep your answers relevant to this topic when possible.
+{{/if}}
   
 Question: {{{question}}}
   

@@ -15,6 +15,7 @@ const YoutubeSummarizationInputSchema = z.object({
   youtubeVideoLink: z
     .string()
     .describe('The link to the YouTube video to be summarized.'),
+  topic: z.string().describe('The specific topic to focus on within the video.'),
 });
 export type YoutubeSummarizationInput = z.infer<typeof YoutubeSummarizationInputSchema>;
 
@@ -38,18 +39,20 @@ const prompt = ai.definePrompt({
   name: 'youtubeSummarizationPrompt',
   input: {schema: YoutubeSummarizationInputSchema},
   output: {schema: YoutubeSummarizationOutputSchema},
-  prompt: `You are an expert at analyzing and explaining educational YouTube videos. Your goal is to make the video's content easy to understand.
+  prompt: `You are an expert at analyzing and explaining educational YouTube videos. Your goal is to make the video's content easy to understand, focusing on a specific topic.
     
 Analyze the video from this link: {{{youtubeVideoLink}}}.
 
+The analysis should focus specifically on the topic of: **{{{topic}}}**
+
 Your response must have two parts:
-1.  A concise, high-level summary of the entire video.
-2.  A list of the main topics or key moments from the video as time-coded explanations. For each key moment, you must provide:
+1.  A concise, high-level summary of the video, concentrating on the parts relevant to the specified topic.
+2.  A list of the main topics or key moments from the video that are related to **{{{topic}}}**. For each key moment, you must provide:
     - The exact timestamp where the topic begins (in MM:SS or HH:MM:SS format).
     - A short, descriptive title for the topic.
     - A detailed explanation of the concept discussed in that segment.
     
-Make sure the timestamps are accurate and the explanations are clear and helpful for learning.`,
+Make sure the timestamps are accurate and the explanations are clear, helpful for learning, and directly related to the topic provided.`,
 });
 
 const youtubeSummarizationFlow = ai.defineFlow(

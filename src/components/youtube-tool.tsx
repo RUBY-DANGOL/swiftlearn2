@@ -9,7 +9,7 @@ import { youtubeSummarization, type YoutubeSummarizationOutput } from '@/ai/flow
 import { youtubeChatbot } from '@/ai/flows/youtube-chatbot';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -26,6 +26,7 @@ type TimecodedExplanation = YoutubeSummarizationOutput['timecodedExplanations'][
 
 const formSchema = z.object({
   url: z.string().url({ message: 'Please enter a valid YouTube URL.' }),
+  topic: z.string().min(1, { message: 'Please enter a topic to focus on.' }),
 });
 
 type ChatMessage = {
@@ -41,12 +42,13 @@ export function YoutubeTool() {
   const [isSummarizing, setIsSummarizing] = useState(false);
   const [isChatting, setIsChatting] = useState(false);
   const [currentUrl, setCurrentUrl] = useState('');
+  const [currentTopic, setCurrentTopic] = useState('');
   const [videoId, setVideoId] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { url: '' },
+    defaultValues: { url: '', topic: '' },
   });
 
   const chatForm = useForm({
@@ -101,6 +103,7 @@ export function YoutubeTool() {
     setChatHistory([]);
     setTimecodedExplanations([]);
     setCurrentUrl(values.url);
+    setCurrentTopic(values.topic);
 
     const extractedVideoId = getYouTubeVideoId(values.url);
     if (!extractedVideoId) {
@@ -114,12 +117,12 @@ export function YoutubeTool() {
     }
 
     try {
-      const result = await youtubeSummarization({ youtubeVideoLink: values.url });
+      const result = await youtubeSummarization({ youtubeVideoLink: values.url, topic: values.topic });
       setVideoId(extractedVideoId);
       setVideoUrl(`https://www.youtube.com/embed/${extractedVideoId}`);
       setSummary(result.summary);
       setTimecodedExplanations(result.timecodedExplanations || []);
-      setChatHistory([{ role: 'bot', content: "I've analyzed the video for you. Ask me anything about it!" }]);
+      setChatHistory([{ role: 'bot', content: "I've analyzed the video for you based on your topic. Ask me anything about it!" }]);
     } catch (error) {
       console.error(error);
       toast({
@@ -141,7 +144,7 @@ export function YoutubeTool() {
     chatForm.reset();
 
     try {
-      const result = await youtubeChatbot({ youtubeVideoUrl: currentUrl, question: values.message });
+      const result = await youtubeChatbot({ youtubeVideoUrl: currentUrl, question: values.message, topic: currentTopic });
       const newAiMessage: ChatMessage = { role: 'bot', content: result.answer };
       setChatHistory(prev => [...prev, newAiMessage]);
     } catch (error) {
@@ -160,16 +163,17 @@ export function YoutubeTool() {
     <Card>
       <CardHeader>
         <CardTitle>YouTube Video Analyzer</CardTitle>
-        <CardDescription>Enter a YouTube URL to display the video, get a summary, and start a chat session.</CardDescription>
+        <CardDescription>Enter a YouTube URL and a topic to focus on. The AI will display the video, generate a summary, and start a chat session.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSummarize)} className="flex items-start gap-2">
-            <FormField
+          <form onSubmit={form.handleSubmit(handleSummarize)} className="space-y-4">
+             <FormField
               control={form.control}
               name="url"
               render={({ field }) => (
-                <FormItem className="flex-grow">
+                <FormItem>
+                   <FormLabel>YouTube URL</FormLabel>
                   <FormControl>
                     <Input placeholder="https://www.youtube.com/watch?v=..." {...field} />
                   </FormControl>
@@ -177,9 +181,22 @@ export function YoutubeTool() {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="topic"
+              render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Topic to Analyze</FormLabel>
+                    <FormControl>
+                        <Input placeholder="e.g., Newton's Laws, Photosynthesis" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button type="submit" disabled={isSummarizing}>
               {isSummarizing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
-              <span className="ml-2 hidden sm:inline">Analyze</span>
+              <span className="ml-2">Analyze Video</span>
             </Button>
           </form>
         </Form>
