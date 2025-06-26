@@ -31,19 +31,21 @@ export default function BiologyPage() {
             </CardContent>
           </Card>
         </Link>
-        <Card className="h-full bg-muted/50">
+        <Link href="/dashboard/biology/grade-12" className="block hover:shadow-lg transition-shadow rounded-lg">
+          <Card className="h-full">
             <CardHeader>
-              <CardTitle className="font-headline text-xl text-muted-foreground">Grade 12</CardTitle>
-              <CardDescription className="text-muted-foreground">
-                Content for Grade 12 Biology is coming soon.
+              <CardTitle className="font-headline text-xl">Grade 12</CardTitle>
+              <CardDescription>
+                Delve into plant anatomy, physiology, genetics, human biology, and the applications of biotechnology.
               </CardDescription>
             </CardHeader>
-             <CardContent>
-              <div className="flex items-center justify-end font-medium text-muted-foreground/60">
-                Coming Soon
+            <CardContent>
+              <div className="flex items-center justify-end font-medium text-primary">
+                View Syllabus <ArrowRight className="w-4 h-4 ml-2" />
               </div>
             </CardContent>
-        </Card>
+          </Card>
+        </Link>
       </div>
     </div>
   );
