@@ -13,6 +13,7 @@ import rehypeRaw from 'rehype-raw';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { VernierCaliperLab } from '@/components/vernier-caliper-lab';
 import { HookesLawLab } from '@/components/hookes-law-lab';
+import { SimplePendulumLab } from '@/components/simple-pendulum-lab';
 
 const grade11Syllabus = [
   { unit: "Unit 1: Mechanics", topics: [{ name: "Physical quantities", slug: "physical-quantities" }, { name: "Vectors", slug: "vectors" }, { name: "Kinematics", slug: "kinematics" }, { name: "Dynamics", slug: "dynamics" }, { name: "Work, energy and power", slug: "work-energy-and-power" }, { name: "Circular motion", slug: "circular-motion" }, { name: "Gravitation", slug: "gravitation" }, { name: "Elasticity", slug: "elasticity" }] },
@@ -118,6 +119,10 @@ export default function Grade11TopicPage() {
                         ) : topicSlug === 'elasticity' ? (
                             <div className="mt-6">
                                 <HookesLawLab />
+                            </div>
+                        ) : topicSlug === 'gravitation' ? (
+                            <div className="mt-6">
+                                <SimplePendulumLab />
                             </div>
                         ) : (
                             <PlaceholderContent title="Virtual Lab Coming Soon" description={`Explore interactive experiments for ${topicName} in our virtual lab.`} />
