@@ -1,3 +1,4 @@
+
 export const physicalQuantitiesNotes = `
 # Chapter: Physical Quantities and Measurement
 
@@ -277,6 +278,212 @@ For Earth: v_esc ≈ 11.2 km/s.
 4. Explain why tides occur twice each day on Earth.
 `;
 
+export const vectorsNotes = `
+# Chapter: Vectors
+
+## 1. Introduction
+Vectors are quantities that have both magnitude and direction, unlike scalars which have only magnitude. They’re essential for describing physical quantities like displacement, velocity, and force.
+
+## 2. Representation of Vectors
+- **Graphical:** As an arrow—length is proportional to magnitude, arrowhead points in the direction.
+- **Analytical:** By components in a coordinate system. In two dimensions:
+  **A⃗ = Aₓı̂ + Aᵧȷ̂**
+  where **Aₓ = Acos(θ)** and **Aᵧ = Asin(θ)**.
+
+## 3. Vector Operations
+| Operation | Definition | Result |
+|---|---|---|
+| Addition | **A⃗ + B⃗** (head–to–tail rule) | Vector sum |
+| Subtraction | **A⃗ - B⃗ = A⃗ + (-B⃗)** | Vector difference |
+| Scalar (Dot) Product | **A⃗ ⋅ B⃗ = ABcos(ϕ)** | Scalar |
+| Vector (Cross) Product | **A⃗ × B⃗ = ABsin(ϕ)n̂** | Vector perpendicular to the plane |
+
+- **Dot product (component form):**
+  **A⃗ ⋅ B⃗ = AₓBₓ + AᵧBᵧ + A₂B₂**
+
+- **Cross product (component form in 3D):**
+  **A⃗ × B⃗** is the determinant of the matrix:
+  | ı̂ | ȷ̂ | k̂ |
+  |---|---|---|
+  | Aₓ | Aᵧ | A₂ |
+  | Bₓ | Bᵧ | B₂ |
+
+## 4. Unit Vectors and Direction Cosines
+- A **unit vector (û)** has magnitude 1. For a vector **A⃗**, its unit vector is **Â = A⃗ / A**.
+- **Direction cosines** are the cosines of the angles between a vector and the coordinate axes:
+  - cos(α) = Aₓ/A
+  - cos(β) = Aᵧ/A
+  - cos(γ) = A₂/A
+
+## 5. Applications
+- Breaking forces into components for equilibrium analysis.
+- Adding displacement vectors in navigation.
+- Calculating work done by a force: **W = F⃗ ⋅ s⃗**
+
+## 6. Practice Questions
+1. If **A⃗ = 3ı̂ + 4ȷ̂** and **B⃗ = 2ı̂ - ȷ̂**, find **A⃗ + B⃗**, **A⃗ ⋅ B⃗**, and **A⃗ × B⃗**.
+2. Determine the unit vector along **C⃗ = 5ı̂ - 2ȷ̂ + 2k̂**.
+3. A force of magnitude 10 N acts at 30° above the horizontal; find its horizontal and vertical components.
+`;
+
+export const kinematicsNotes = `
+# Chapter: Kinematics (Rectilinear Motion)
+
+## 1. Introduction
+Kinematics is the branch of mechanics that describes motion without considering its causes. For one-dimensional motion under constant acceleration, a set of key equations governs position, velocity, and time.
+
+## 2. Key Quantities
+- **Displacement (s or x):** The change in position of an object.
+- **Velocity (v):** The rate of change of displacement. **v = ds/dt**
+- **Acceleration (a):** The rate of change of velocity. **a = dv/dt**
+
+## 3. Equations of Motion (for constant acceleration 'a')
+Given initial velocity **u**, final velocity **v**, constant acceleration **a**, displacement **s**, and time **t**:
+1.  **v = u + at**
+2.  **s = ut + (1/2)at²**
+3.  **v² = u² + 2as**
+4.  **s = (1/2)(u + v)t**
+
+## 4. Graphical Analysis of Motion
+- **Position–time graph:** The slope (gradient) gives the velocity.
+- **Velocity–time graph:** The slope gives the acceleration, and the area under the graph gives the displacement.
+- **Acceleration–time graph:** The area under the graph gives the change in velocity.
+
+## 5. Special Cases
+- **Free fall:** An object falling under gravity has a constant downward acceleration **a = g ≈ 9.81 m/s²**.
+- **Vertical projection:** For an object thrown upwards, we often take the upward direction as positive, so **a = -g**.
+
+## 6. Practice Questions
+1. A car starts from rest and accelerates uniformly at 2 m/s². How far does it travel in 5 seconds?
+2. A ball is thrown vertically upward with a speed of 15 m/s. How high does it go, and how long does it take to return to the thrower's hand?
+3. Sketch the s-t and v-t graphs for an object moving with constant negative acceleration.
+`;
+
+export const dynamicsNotes = `
+# Chapter: Dynamics (Newton’s Laws)
+
+## 1. Introduction
+Dynamics explains *why* objects move as they do. It is based on Newton's three fundamental laws of motion.
+
+## 2. Newton’s Laws of Motion
+1.  **First Law (Inertia):** An object remains at rest or in uniform motion in a straight line unless acted upon by a net external force.
+2.  **Second Law (F = ma):** The acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass. **∑F = ma**
+3.  **Third Law (Action–Reaction):** For every action, there is an equal and opposite reaction. If object A exerts a force on object B, then object B exerts an equal and opposite force on object A.
+
+## 3. Common Types of Forces
+- **Gravitational Force (Weight):** W = mg, acting vertically downward near Earth’s surface.
+- **Normal Force (N):** A contact force acting perpendicular to a surface.
+- **Frictional Force (f):** A force that opposes motion or attempted motion. **f ≤ μN**.
+- **Tension (T):** The force exerted by a string, rope, or cable.
+- **Spring Force:** The force exerted by a spring, given by Hooke's Law (F = -kx).
+
+## 4. Free-Body Diagrams
+A free-body diagram is a crucial tool for solving dynamics problems:
+1.  Isolate the object of interest.
+2.  Draw all external forces acting *on* the object as vectors originating from the center.
+3.  Choose a coordinate system and resolve forces into components.
+4.  Apply Newton's Second Law to each axis: **∑Fₓ = maₓ** and **∑Fᵧ = maᵧ**.
+
+## 5. Applications of Dynamics
+- **Inclined Plane:** The weight (mg) is resolved into components: **mg sin(θ)** down the slope and **mg cos(θ)** perpendicular to the slope.
+- **Atwood’s Machine:** For two masses (m₁, m₂) over a frictionless pulley, the acceleration is **a = (m₂ - m₁)g / (m₁ + m₂)**.
+- **Uniform Circular Motion:** An object moving in a circle at constant speed has a net force, the centripetal force, directed towards the center: **F_c = mv²/r**.
+
+## 6. Practice Questions
+1. A block of mass 5 kg rests on a 30° incline. If the coefficient of kinetic friction is 0.2, find its acceleration down the plane.
+2. Two masses, 3 kg and 5 kg, are connected by a light string over a frictionless pulley. Find the acceleration of the system and the tension in the string.
+3. A 1 kg mass is attached to a spring with a spring constant of 200 N/m. If it is pulled 0.1 m from equilibrium and released, what is its maximum acceleration?
+`;
+
+export const workEnergyPowerNotes = `
+# Chapter: Work, Energy & Power
+
+## 1. Introduction
+This chapter connects the concepts of force and motion to energy and the rate at which energy is transferred.
+
+## 2. Work
+Work is done when a force causes a displacement.
+- For a constant force **F** causing a displacement **s**, the work done is:
+  **W = Fs cos(θ)**
+  where θ is the angle between the force and displacement vectors.
+- The general definition of work is **W = ∫ F⃗ ⋅ ds⃗**.
+- **Unit:** joule (J). 1 J = 1 N·m.
+
+## 3. Energy
+Energy is the capacity to do work.
+- **Kinetic Energy (K):** The energy of motion.
+  **K = (1/2)mv²**
+- **Potential Energy (U):** Stored energy due to position or configuration.
+  - **Gravitational Potential Energy:** U = mgh
+  - **Elastic Potential Energy (in a spring):** U = (1/2)kx²
+
+## 4. Work–Energy Theorem
+The net work done on an object equals the change in its kinetic energy.
+**W_net = ΔK = K_final - K_initial = (1/2)mv² - (1/2)mu²**
+
+## 5. Conservation of Mechanical Energy
+If only conservative forces (like gravity and spring forces) do work, the total mechanical energy (K + U) of a system is conserved.
+**K_initial + U_initial = K_final + U_final**
+Non-conservative forces, like friction, dissipate mechanical energy.
+
+## 6. Power
+Power is the rate at which work is done or energy is transferred.
+- **Average Power:** P_avg = W / Δt
+- **Instantaneous Power:** **P = dW/dt = F⃗ ⋅ v⃗**
+- **Unit:** watt (W). 1 W = 1 J/s.
+
+## 7. Efficiency
+Efficiency (η) is the ratio of useful energy output to the total energy input.
+**η = (Useful Energy Output / Total Energy Input) × 100%**
+
+## 8. Practice Questions
+1. A 2 kg block is accelerated from 3 m/s to 7 m/s. Calculate the net work done on the block.
+2. A 5 kg mass is lifted 2 meters vertically at a constant speed. How much work is done against gravity? If it is lifted in 4 seconds, what is the power developed?
+3. A spring with a spring constant of 50 N/m is compressed by 0.2 m. How much potential energy is stored in the spring?
+`;
+
+export const circularMotionNotes = `
+# Chapter: Circular Motion
+
+## 1. Introduction
+Circular motion describes the movement of an object along a circular path. Even if the speed is constant, there is always an acceleration because the direction of velocity is changing.
+
+## 2. Angular Quantities
+Motion in a circle is often described using angular variables:
+- **Angular Displacement (θ):** The angle swept by the radius vector. Unit: radians (rad).
+- **Angular Velocity (ω):** The rate of change of angular displacement. **ω = dθ/dt**. Unit: rad/s.
+- **Angular Acceleration (α):** The rate of change of angular velocity. **α = dω/dt**. Unit: rad/s².
+
+## 3. Relationship between Linear and Angular Quantities
+For a circle of radius **r**:
+- Arc length **s = rθ**
+- Tangential speed **v = rω**
+- Tangential acceleration **a_t = rα**
+
+## 4. Centripetal Acceleration and Force
+- **Centripetal Acceleration (a_c):** The acceleration directed towards the center of the circle, responsible for changing the direction of the velocity vector.
+  **a_c = v²/r = rω²**
+- **Centripetal Force (F_c):** The net force required to cause centripetal acceleration. It always points towards the center of the circle.
+  **F_c = ma_c = mv²/r = mrω²**
+  This is not a new type of force; it is the *net result* of other forces (e.g., tension, gravity, friction).
+
+## 5. Dynamics of Circular Motion
+- Apply Newton's Second Law to the radial (centripetal) and tangential directions separately.
+  - **∑F_radial = ma_c = mv²/r**
+  - **∑F_tangential = ma_t**
+- The tangential force component changes the object's speed. The centripetal force component changes its direction.
+
+## 6. Applications
+- **Banking of Curves:** Roads are banked at an angle θ so that the normal force provides the necessary centripetal force. For no friction, the ideal angle is given by **tan(θ) = v² / (rg)**.
+- **Vertical Circles (e.g., roller coaster loop):** The required centripetal force is provided by the combination of gravity and the normal force (or tension). The minimum speed at the top to complete the loop is **v_top = √(rg)**.
+
+## 7. Practice Questions
+1. A 1000 kg car takes a flat turn of radius 50 m at a speed of 20 m/s. What is the minimum coefficient of static friction required between the tires and the road?
+2. A 0.2 kg stone is whirled on a string in a horizontal circle of radius 0.5 m at a rate of 3 revolutions per second. Compute its angular velocity (ω), linear speed (v), and the tension in the string.
+3. Calculate the ideal banking angle for a highway curve of radius 100 m if the designated speed is 25 m/s.
+`;
+
+
 export const grade11NotesMap: Record<string, { notes: string; quizQuestions: number }> = {
   'physical-quantities': {
     notes: physicalQuantitiesNotes,
@@ -288,6 +495,26 @@ export const grade11NotesMap: Record<string, { notes: string; quizQuestions: num
   },
   'gravitation': {
     notes: gravitationNotes,
+    quizQuestions: 50,
+  },
+  'vectors': {
+    notes: vectorsNotes,
+    quizQuestions: 50,
+  },
+  'kinematics': {
+    notes: kinematicsNotes,
+    quizQuestions: 50,
+  },
+  'dynamics': {
+    notes: dynamicsNotes,
+    quizQuestions: 50,
+  },
+  'work-energy-and-power': {
+    notes: workEnergyPowerNotes,
+    quizQuestions: 50,
+  },
+  'circular-motion': {
+    notes: circularMotionNotes,
     quizQuestions: 50,
   },
 };
