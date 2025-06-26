@@ -4,6 +4,13 @@ import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, MessageCircle, HelpCircle, History, Beaker, Dna } from 'lucide-react';
+import { grade11BiologyNotesMap } from '@/lib/biology-notes';
+import { ContextualChatbot } from '@/components/contextual-chatbot';
+import { Quiz } from '@/components/quiz';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const grade11BiologySyllabus = [
     { 
@@ -49,6 +56,7 @@ export default function Grade11TopicPage() {
     const params = useParams();
     const topicSlug = params.topic as string;
     const topicName = findTopicName(topicSlug);
+    const topicContent = grade11BiologyNotesMap[topicSlug];
 
     return (
         <Card>
@@ -69,13 +77,43 @@ export default function Grade11TopicPage() {
                         <TabsTrigger value="lab" className="gap-2"><Beaker className="h-4 w-4" /> Lab</TabsTrigger>
                     </TabsList>
                     <TabsContent value="notes">
-                        <PlaceholderContent title="Notes Coming Soon" description={`Notes for ${topicName} will be available here.`} />
+                        {topicContent ? (
+                            <Card className="mt-6">
+                                <CardContent className="p-0">
+                                    <ScrollArea className="h-[70vh] rounded-md">
+                                        <div className="p-6">
+                                        <ReactMarkdown
+                                            className="prose prose-sm dark:prose-invert max-w-none"
+                                            remarkPlugins={[remarkGfm]}
+                                            rehypePlugins={[rehypeRaw]}
+                                        >
+                                            {topicContent.notes}
+                                        </ReactMarkdown>
+                                        </div>
+                                    </ScrollArea>
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <PlaceholderContent title="Notes Coming Soon" description={`Notes for ${topicName} will be available here.`} />
+                        )}
                     </TabsContent>
                     <TabsContent value="chatbot">
-                        <PlaceholderContent title="Chatbot Coming Soon" description={`An interactive chatbot to help you with ${topicName} will be here.`} />
+                        {topicContent ? (
+                             <div className="mt-6">
+                                <ContextualChatbot context={topicContent.notes} />
+                            </div>
+                        ) : (
+                            <PlaceholderContent title="Chatbot Coming Soon" description={`An interactive chatbot to help you with ${topicName} will be here.`} />
+                        )}
                     </TabsContent>
                     <TabsContent value="quiz">
-                        <PlaceholderContent title="Quiz Coming Soon" description={`Test your knowledge on ${topicName} with our upcoming quiz.`} />
+                        {topicContent ? (
+                            <div className="mt-6">
+                                <Quiz context={topicContent.notes} numberOfQuestions={topicContent.quizQuestions} />
+                            </div>
+                        ) : (
+                            <PlaceholderContent title="Quiz Coming Soon" description={`Test your knowledge on ${topicName} with our upcoming quiz.`} />
+                        )}
                     </TabsContent>
                     <TabsContent value="past-questions">
                         <PlaceholderContent title="Past Questions Coming Soon" description={`Practice with past questions related to ${topicName}.`} />
