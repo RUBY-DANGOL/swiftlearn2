@@ -25,8 +25,8 @@ declare global {
   }
 }
 
-// This URL must point to the raw .glb file from GitHub.
-const MODEL_URL = 'https://github.com/Ambiton-HackFest-2082/LEVISA/raw/refs/heads/main/namedskeleton.glb';
+// User-provided Google Drive download link.
+const MODEL_URL = 'https://drive.usercontent.google.com/u/0/uc?id=134Ff-9DdBqK3ONII-9pnnD07k_mvs883&export=download';
 
 export function InteractiveMuscleAnatomy() {
   return (
@@ -34,17 +34,17 @@ export function InteractiveMuscleAnatomy() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Orbit className="w-6 h-6" />
-          Interactive Human Skeleton
+          Interactive Muscle Anatomy
         </CardTitle>
         <CardDescription>
-          Explore the 3D model of a human skeleton. Drag to rotate, scroll to zoom.
+          Explore the 3D model of human muscle anatomy. Drag to rotate, scroll to zoom.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
         <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-muted/30 flex items-center justify-center">
             <model-viewer
               src={MODEL_URL}
-              alt="A 3D model of a human skeleton"
+              alt="A 3D model of human muscle anatomy"
               auto-rotate
               camera-controls
               style={{ width: '100%', height: '100%' }}
@@ -57,9 +57,9 @@ export function InteractiveMuscleAnatomy() {
         </div>
         <Alert>
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Using your GitHub Model</AlertTitle>
+          <AlertTitle>Note on Google Drive Links</AlertTitle>
           <AlertDescription>
-            This component is now loading your model from GitHub. For future changes, ensure the URL points to the raw version of the file, which usually starts with <code className="font-semibold text-foreground bg-muted p-1 rounded-sm">raw.githubusercontent.com</code>.
+            This component is attempting to load your model from Google Drive. Please be aware that this method can sometimes be unreliable. For best results in the future, using a raw link from a service like GitHub is recommended.
           </AlertDescription>
         </Alert>
       </CardContent>
