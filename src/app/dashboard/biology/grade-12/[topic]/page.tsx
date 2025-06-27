@@ -13,8 +13,8 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-const InteractiveSkeletonLab = dynamic(
-    () => import('@/components/human-skeleton-lab').then((mod) => mod.InteractiveSkeletonLab),
+const InteractiveMuscleAnatomy = dynamic(
+    () => import('@/components/interactive-muscle-anatomy').then((mod) => mod.InteractiveMuscleAnatomy),
     {
         ssr: false,
         loading: () => (
@@ -138,7 +138,7 @@ export default function Grade12TopicPage() {
                     <TabsContent value="lab">
                         {topicSlug === 'human-biology' ? (
                             <div className="mt-6">
-                                <InteractiveSkeletonLab />
+                                <InteractiveMuscleAnatomy />
                             </div>
                         ) : (
                             <PlaceholderContent title="Virtual Lab Coming Soon" description={`Explore interactive experiments for ${topicName} in our virtual lab.`} />
