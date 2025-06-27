@@ -35,16 +35,8 @@ export function InteractiveSkeletonLab() {
   const [selectedBone, setSelectedBone] = useState<string>('None');
   const [modelSrc, setModelSrc] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // This ensures the component only runs on the client, preventing SSR issues
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isClient) return;
-
     const fetchModel = async () => {
       setIsLoading(true);
       try {
@@ -74,7 +66,7 @@ export function InteractiveSkeletonLab() {
     };
 
     fetchModel();
-  }, [isClient]);
+  }, []);
 
   const handleHotspotClick = (boneName: string) => {
     setSelectedBone(boneName);
@@ -96,71 +88,64 @@ export function InteractiveSkeletonLab() {
             <span className="font-semibold">Selected Bone:</span> {selectedBone}
         </div>
         <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-muted/30 flex items-center justify-center">
-        {isClient ? (
-          isLoading ? (
-            <div className="flex flex-col items-center gap-2 text-muted-foreground">
-              <Loader2 className="w-8 h-8 animate-spin" />
-              <span>Loading 3D Model...</span>
-            </div>
-          ) : modelSrc ? (
-            <model-viewer
-              src={modelSrc}
-              alt="A 3D model of a human skeleton"
-              auto-rotate
-              camera-controls
-              style={{ width: '100%', height: '100%' }}
-            >
-              <button
-                className="w-4 h-4 rounded-full border-2 bg-red-500/70 border-white cursor-pointer"
-                slot="hotspot-skull"
-                data-position="0 1.62 0"
-                onClick={() => handleHotspotClick('Skull')}
-              ></button>
-              <button
-                className="w-4 h-4 rounded-full border-2 bg-blue-500/70 border-white cursor-pointer"
-                slot="hotspot-clavicle"
-                data-position="0.2 1.4 0.1"
-                onClick={() => handleHotspotClick('Clavicle')}
-              ></button>
-              <button
-                className="w-4 h-4 rounded-full border-2 bg-yellow-500/70 border-white cursor-pointer"
-                slot="hotspot-ribs"
-                data-position="0 1.25 0"
-                onClick={() => handleHotspotClick('Rib Cage')}
-              ></button>
-              <button
-                className="w-4 h-4 rounded-full border-2 bg-purple-500/70 border-white cursor-pointer"
-                slot="hotspot-humerus"
-                data-position="-0.3 1.2 0"
-                onClick={() => handleHotspotClick('Humerus')}
-              ></button>
-              <button
-                className="w-4 h-4 rounded-full border-2 bg-orange-500/70 border-white cursor-pointer"
-                slot="hotspot-pelvis"
-                data-position="0 0.9 0"
-                onClick={() => handleHotspotClick('Pelvis')}
-              ></button>
-              <button
-                className="w-4 h-4 rounded-full border-2 bg-green-500/70 border-white cursor-pointer"
-                slot="hotspot-femur"
-                data-position="0.15 0.7 0"
-                onClick={() => handleHotspotClick('Femur')}
-              ></button>
-              <button
-                className="w-4 h-4 rounded-full border-2 bg-pink-500/70 border-white cursor-pointer"
-                slot="hotspot-tibia"
-                data-position="0.15 0.2 0"
-                onClick={() => handleHotspotClick('Tibia')}
-              ></button>
-            </model-viewer>
-          ) : (
-            <div className="text-destructive">Failed to load model. Please check the API key and entry ID.</div>
-          )
-        ) : (
+        {isLoading ? (
           <div className="flex flex-col items-center gap-2 text-muted-foreground">
             <Loader2 className="w-8 h-8 animate-spin" />
-            <span>Initializing Viewer...</span>
+            <span>Loading 3D Model...</span>
           </div>
+        ) : modelSrc ? (
+          <model-viewer
+            src={modelSrc}
+            alt="A 3D model of a human skeleton"
+            auto-rotate
+            camera-controls
+            style={{ width: '100%', height: '100%' }}
+          >
+            <button
+              className="w-4 h-4 rounded-full border-2 bg-red-500/70 border-white cursor-pointer"
+              slot="hotspot-skull"
+              data-position="0 1.62 0"
+              onClick={() => handleHotspotClick('Skull')}
+            ></button>
+            <button
+              className="w-4 h-4 rounded-full border-2 bg-blue-500/70 border-white cursor-pointer"
+              slot="hotspot-clavicle"
+              data-position="0.2 1.4 0.1"
+              onClick={() => handleHotspotClick('Clavicle')}
+            ></button>
+            <button
+              className="w-4 h-4 rounded-full border-2 bg-yellow-500/70 border-white cursor-pointer"
+              slot="hotspot-ribs"
+              data-position="0 1.25 0"
+              onClick={() => handleHotspotClick('Rib Cage')}
+            ></button>
+            <button
+              className="w-4 h-4 rounded-full border-2 bg-purple-500/70 border-white cursor-pointer"
+              slot="hotspot-humerus"
+              data-position="-0.3 1.2 0"
+              onClick={() => handleHotspotClick('Humerus')}
+            ></button>
+            <button
+              className="w-4 h-4 rounded-full border-2 bg-orange-500/70 border-white cursor-pointer"
+              slot="hotspot-pelvis"
+              data-position="0 0.9 0"
+              onClick={() => handleHotspotClick('Pelvis')}
+            ></button>
+            <button
+              className="w-4 h-4 rounded-full border-2 bg-green-500/70 border-white cursor-pointer"
+              slot="hotspot-femur"
+              data-position="0.15 0.7 0"
+              onClick={() => handleHotspotClick('Femur')}
+            ></button>
+            <button
+              className="w-4 h-4 rounded-full border-2 bg-pink-500/70 border-white cursor-pointer"
+              slot="hotspot-tibia"
+              data-position="0.15 0.2 0"
+              onClick={() => handleHotspotClick('Tibia')}
+            ></button>
+          </model-viewer>
+        ) : (
+          <div className="text-destructive">Failed to load model. Please check the API key and entry ID.</div>
         )}
         </div>
       </CardContent>

@@ -1,9 +1,10 @@
 'use client'
 
 import { useParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, MessageCircle, HelpCircle, History, Beaker, Dna } from 'lucide-react';
+import { BookOpen, MessageCircle, HelpCircle, History, Beaker, Dna, Loader2 } from 'lucide-react';
 import { grade12BiologyNotesMap } from '@/lib/biology-notes';
 import { ContextualChatbot } from '@/components/contextual-chatbot';
 import { Quiz } from '@/components/quiz';
@@ -11,7 +12,22 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { InteractiveSkeletonLab } from '@/components/human-skeleton-lab';
+
+const InteractiveSkeletonLab = dynamic(
+    () => import('@/components/human-skeleton-lab').then((mod) => mod.InteractiveSkeletonLab),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="mt-6 flex h-[500px] items-center justify-center rounded-lg bg-muted/50">
+                <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                    <Loader2 className="w-8 h-8 animate-spin" />
+                    <span>Loading 3D Lab...</span>
+                </div>
+            </div>
+        ),
+    }
+);
+
 
 const grade12BiologySyllabus = [
     { 
