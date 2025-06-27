@@ -30,7 +30,7 @@ const prompt = ai.definePrompt({
   name: 'contextualChatbotPrompt',
   input: {schema: ContextualChatbotInputSchema},
   output: {schema: ContextualChatbotOutputSchema},
-  prompt: `You are an expert physics tutor. Your role is to answer the user's question based *only* on the provided context below.
+  prompt: `You are an expert tutor. Your role is to answer the user's question based *only* on the provided context below.
 
 Do not use any external knowledge. If the answer cannot be found in the context, you must explicitly state that the answer is not available in the provided notes.
 
