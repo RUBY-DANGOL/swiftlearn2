@@ -11,7 +11,7 @@ declare global {
     interface IntrinsicElements {
       'model-viewer': React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement> & {
-          src: string;
+          src?: string;
           alt: string;
           'camera-controls': boolean;
           'auto-rotate': boolean;
@@ -25,45 +25,61 @@ declare global {
 }
 
 const ECHO3D_API_KEY = 'polished-violet-9331';
-const ECHO3D_ENTRY_ID = 'a2179836-e81e-42b7-a859-0a61250280b2';
+const ECHO3D_ENTRY_ID = '657ed481-ba41-49f8-aabb-1bf96f298907';
 
-// We use the 'get' endpoint to retrieve metadata including the direct storage link
-const echo3dApiUrl = `https://api.echo3d.com/get?key=${ECHO3D_API_KEY}&entry=${ECHO3D_ENTRY_ID}`;
+const metadataUrl = `https://api.echo3d.com/get?key=${ECHO3D_API_KEY}&entry=${ECHO3D_ENTRY_ID}`;
 
 export function InteractiveMuscleAnatomy() {
   const [modelSrc, setModelSrc] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let objectUrl: string | undefined;
+
     const fetchModel = async () => {
       setIsLoading(true);
+      setError(null);
       try {
-        // Fetch metadata from Echo3D API
-        const response = await fetch(echo3dApiUrl);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch model metadata: ${response.statusText}`);
+        // Step 1: Fetch metadata to find the storage ID
+        const metaResponse = await fetch(metadataUrl);
+        if (!metaResponse.ok) {
+          throw new Error(`Failed to fetch model metadata: ${metaResponse.statusText}`);
         }
-        const data = await response.json();
-        
-        // Extract the storage ID for the GLB model
-        const storageID = data?.hologram?.storageID;
+        const metaData = await metaResponse.json();
+        const storageID = metaData?.hologram?.storageID;
         if (!storageID) {
           throw new Error("Could not find storageID in the API response.");
         }
 
-        // Construct the direct URL to the model file
-        const directModelUrl = `https://storage.echo3d.com/${ECHO3D_API_KEY}/${storageID}`;
-        setModelSrc(directModelUrl);
-
-      } catch (error) {
-        console.error("Error loading 3D model:", error);
-        setModelSrc(null); // Set to null on error to show the failure message
+        // Step 2: Fetch the actual model file using the storage ID
+        const modelDownloadUrl = `https://api.echo3d.com/query?key=${ECHO3D_API_KEY}&file=${storageID}`;
+        const modelResponse = await fetch(modelDownloadUrl);
+        if (!modelResponse.ok) {
+            throw new Error(`Failed to download model file: ${modelResponse.statusText}`);
+        }
+        const blob = await modelResponse.blob();
+        
+        // Step 3: Create a temporary local URL for the model data
+        objectUrl = URL.createObjectURL(blob);
+        setModelSrc(objectUrl);
+      } catch (e: any) {
+        console.error("Error loading 3D model:", e);
+        setError("Failed to load model. There might be an issue with the Echo3D service or network policies.");
+        setModelSrc(null);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchModel();
+
+    // Clean up the created object URL when the component unmounts.
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
   }, []);
   
   return (
@@ -79,23 +95,25 @@ export function InteractiveMuscleAnatomy() {
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
         <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-muted/30 flex items-center justify-center">
-        {isLoading ? (
-          <div className="flex flex-col items-center gap-2 text-muted-foreground">
-            <Loader2 className="w-8 h-8 animate-spin" />
-            <span>Loading 3D Model...</span>
-          </div>
-        ) : modelSrc ? (
-          <model-viewer
-            src={modelSrc}
-            alt="A 3D model of human muscle anatomy"
-            auto-rotate
-            camera-controls
-            style={{ width: '100%', height: '100%' }}
-          >
-          </model-viewer>
-        ) : (
-          <div className="text-destructive">Failed to load model. Please check the API key and entry ID.</div>
-        )}
+          {isLoading && (
+            <div className="flex flex-col items-center gap-2 text-muted-foreground">
+              <Loader2 className="w-8 h-8 animate-spin" />
+              <span>Loading 3D Model...</span>
+            </div>
+          )}
+          {error && !isLoading && (
+            <div className="text-destructive p-4 text-center">{error}</div>
+          )}
+          {!isLoading && !error && modelSrc && (
+            <model-viewer
+              src={modelSrc}
+              alt="A 3D model of human muscle anatomy"
+              auto-rotate
+              camera-controls
+              style={{ width: '100%', height: '100%' }}
+            >
+            </model-viewer>
+          )}
         </div>
       </CardContent>
     </Card>
