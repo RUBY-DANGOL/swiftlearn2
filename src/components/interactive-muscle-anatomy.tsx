@@ -1,11 +1,9 @@
-
 'use client';
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Orbit, Loader2, AlertCircle } from 'lucide-react';
+import { Orbit, Loader2 } from 'lucide-react';
 import '@google/model-viewer';
-import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 
 // TypeScript support for @google/model-viewer
 declare global {
@@ -41,13 +39,6 @@ export function InteractiveMuscleAnatomy() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
-        <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Action Required</AlertTitle>
-            <AlertDescription>
-                To load the 3D model, please add your <code className="font-semibold text-foreground">namedskeleton.glb</code> file to the <code className="font-semibold text-foreground">public</code> folder in your project's file explorer.
-            </AlertDescription>
-        </Alert>
         <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-muted/30 flex items-center justify-center">
             <model-viewer
               src={MODEL_URL}
