@@ -24,7 +24,7 @@ declare global {
   }
 }
 
-const MODEL_URL = '/rnadna.glb';
+const MODEL_URL = '/rnadna (1).glb';
 
 export function InteractiveDnaModel() {
   const modelViewerRef = useRef<HTMLElement>(null);
