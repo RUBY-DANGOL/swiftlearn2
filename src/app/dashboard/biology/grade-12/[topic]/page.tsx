@@ -28,6 +28,21 @@ const InteractiveMuscleAnatomy = dynamic(
     }
 );
 
+const InteractiveDnaModel = dynamic(
+    () => import('@/components/interactive-dna-model').then((mod) => mod.InteractiveDnaModel),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="mt-6 flex h-[500px] items-center justify-center rounded-lg bg-muted/50">
+                <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                    <Loader2 className="w-8 h-8 animate-spin" />
+                    <span>Loading 3D Lab...</span>
+                </div>
+            </div>
+        ),
+    }
+);
+
 
 const grade12BiologySyllabus = [
     { 
@@ -139,6 +154,10 @@ export default function Grade12TopicPage() {
                         {topicSlug === 'human-biology' ? (
                             <div className="mt-6">
                                 <InteractiveMuscleAnatomy />
+                            </div>
+                        ) : topicSlug === 'development-biology' ? (
+                            <div className="mt-6">
+                                <InteractiveDnaModel />
                             </div>
                         ) : (
                             <PlaceholderContent title="Virtual Lab Coming Soon" description={`Explore interactive experiments for ${topicName} in our virtual lab.`} />
