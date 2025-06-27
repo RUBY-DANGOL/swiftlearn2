@@ -26,7 +26,7 @@ declare global {
 }
 
 // This URL must point to the raw .glb file from GitHub.
-const MODEL_URL = 'https://raw.githubusercontent.com/Ambiton-HackFest-2082/LEVISA/main/namedskeleton.glb';
+const MODEL_URL = 'https://github.com/Ambiton-HackFest-2082/LEVISA/raw/refs/heads/main/namedskeleton.glb';
 
 export function InteractiveMuscleAnatomy() {
   return (
