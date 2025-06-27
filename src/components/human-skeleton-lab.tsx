@@ -25,12 +25,10 @@ declare global {
 }
 
 // =================================================================
-// IMPORTANT: ACTION REQUIRED
-// To use your own 3D model from Echo3D, replace the placeholders
-// below with your actual API key and Entry ID.
+// The API Key and Entry ID from your Echo3D link have been added.
 // =================================================================
-const ECHO3D_API_KEY = 'YOUR_ECHO3D_API_KEY_HERE';
-const ECHO3D_ENTRY_ID = 'YOUR_SKELETON_ENTRY_ID_HERE';
+const ECHO3D_API_KEY = 'rough-surf-3701';
+const ECHO3D_ENTRY_ID = 'a62a6b2c-6338-4e08-958a-a621743f338d';
 const modelUrl = `https://api.echo3d.com/query?key=${ECHO3D_API_KEY}&entry=${ECHO3D_ENTRY_ID}`;
 // Note: If the model doesn't load, please double-check your credentials above.
 
