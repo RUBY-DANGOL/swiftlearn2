@@ -23,19 +23,25 @@ const chemicals: Chemical[] = [
   { id: 'cuso4', name: 'Copper Sulfate', formula: 'CuSO₄', color: 'bg-sky-300' },
   { id: 'naoh', name: 'Sodium Hydroxide', formula: 'NaOH', color: 'bg-indigo-200' },
   { id: 'vinegar', name: 'Vinegar', formula: 'CH₃COOH', color: 'bg-orange-100' },
+  { id: 'kmno4', name: 'Potassium Permanganate', formula: 'KMnO₄', color: 'bg-pink-300' },
+  { id: 'glycerol', name: 'Glycerol', formula: 'C₃H₈O₃', color: 'bg-gray-100' },
+  { id: 'acetone', name: 'Acetone', formula: 'C₃H₆O', color: 'bg-gray-100' },
+  { id: 'luminol', name: 'Luminol', formula: 'C₈H₇N₃O₂', color: 'bg-yellow-100' },
 ];
 
 const reactionMap: Record<string, { name: string; description: string; type: 'safe' | 'danger' }> = {
   'h2o2_ki_soap': { name: 'Elephant Toothpaste', description: 'A rapid eruption of thick, warm foam is produced as hydrogen peroxide decomposes.', type: 'safe' },
   'cuso4_naoh': { name: 'Royal Blue Precipitate', description: 'A beautiful, deep blue solid, Copper(II) Hydroxide, forms and settles.', type: 'safe' },
-  'naocl_nh3': { name: 'EXPLOSION!', description: 'Mixing bleach and ammonia produces toxic chloramine gas! This is a dangerous combination.', type: 'danger' },
-  'naocl_vinegar': { name: 'DANGER!', description: 'Mixing bleach and acid produces toxic chlorine gas!', type: 'danger' },
+  'h2o2_luminol': { name: 'Blue Glow (Luminol)', description: 'Luminol reacts with the oxidizer to produce a beautiful, glowing blue light.', type: 'safe' },
+  'naocl_nh3': { name: 'DANGER: Toxic Gas!', description: 'Mixing bleach and ammonia produces toxic chloramine gas! This is a dangerous combination.', type: 'danger' },
+  'naocl_vinegar': { name: 'DANGER: Toxic Gas!', description: 'Mixing bleach and acid produces toxic chlorine gas!', type: 'danger' },
+  'acetone_h2o2': { name: 'EXPLOSION!', description: 'Mixing these can form the highly unstable explosive acetone peroxide!', type: 'danger' },
+  'glycerol_kmno4': { name: 'Spontaneous Combustion!', description: 'Potassium permanganate violently oxidizes glycerol, producing fire and smoke.', type: 'danger' },
 };
 
 const getReaction = (ids: string[]) => {
-  const key = ids.sort().join('_');
-  const reverseKey = ids.reverse().join('_');
-  return reactionMap[key] || reactionMap[reverseKey];
+  const key = [...ids].sort().join('_');
+  return reactionMap[key];
 };
 
 
@@ -100,7 +106,7 @@ export function ChemistryLab() {
         <CardHeader>
           <CardTitle>Chemical Shelf</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+        <CardContent className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
           {chemicals.map((chem) => (
             <Button
               key={chem.id}
@@ -109,7 +115,7 @@ export function ChemistryLab() {
               onClick={() => handleSelectChemical(chem)}
               disabled={selectedChemicals.length >= 2 || !!selectedChemicals.find(c => c.id === chem.id)}
             >
-              <FlaskConical size={32} className="text-primary"/>
+              <Beaker size={32} className="text-primary"/>
               <span className="font-bold">{chem.formula}</span>
               <span className="text-xs text-muted-foreground">{chem.name}</span>
             </Button>
