@@ -25,9 +25,8 @@ declare global {
   }
 }
 
-// This URL must point to the raw .glb file, not the GitHub repository page.
-// I've used a sample model here. Replace it with your raw GitHub link.
-const MODEL_URL = 'https://raw.githubusercontent.com/google/model-viewer/master/packages/shared-assets/models/Astronaut.glb';
+// This URL must point to the raw .glb file from GitHub.
+const MODEL_URL = 'https://raw.githubusercontent.com/Ambiton-HackFest-2082/LEVISA/main/namedskeleton.glb';
 
 export function InteractiveMuscleAnatomy() {
   return (
@@ -35,17 +34,17 @@ export function InteractiveMuscleAnatomy() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Orbit className="w-6 h-6" />
-          Interactive 3D Viewer
+          Interactive Human Skeleton
         </CardTitle>
         <CardDescription>
-          Explore the 3D model. Drag to rotate, scroll to zoom.
+          Explore the 3D model of a human skeleton. Drag to rotate, scroll to zoom.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
         <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-muted/30 flex items-center justify-center">
             <model-viewer
               src={MODEL_URL}
-              alt="A 3D model"
+              alt="A 3D model of a human skeleton"
               auto-rotate
               camera-controls
               style={{ width: '100%', height: '100%' }}
@@ -60,7 +59,7 @@ export function InteractiveMuscleAnatomy() {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Using your GitHub Model</AlertTitle>
           <AlertDescription>
-            This component now loads a model from a URL. To use your own file from GitHub, find the file in your repository, click the "Raw" or "Download" button, and use that URL. It should start with <code className="font-semibold text-foreground bg-muted p-1 rounded-sm">raw.githubusercontent.com</code>.
+            This component is now loading your model from GitHub. For future changes, ensure the URL points to the raw version of the file, which usually starts with <code className="font-semibold text-foreground bg-muted p-1 rounded-sm">raw.githubusercontent.com</code>.
           </AlertDescription>
         </Alert>
       </CardContent>
