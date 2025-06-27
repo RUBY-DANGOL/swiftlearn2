@@ -36,6 +36,8 @@ export function InteractiveMuscleAnatomy() {
         </CardTitle>
         <CardDescription>
           Explore a 3D model of a human skeleton. Drag to rotate, scroll to zoom.
+          <br />
+          <span className="text-xs text-destructive">(Note: Make sure 'namedskeleton.glb' is in the 'public' folder)</span>
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
