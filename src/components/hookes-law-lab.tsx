@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useMemo, useCallback } from 'react';
@@ -50,7 +51,7 @@ const RulerSVG = () => {
         let label;
         if (i % 5 === 0) {
             tickWidth = 20;
-            label = <text x="25" y={y + 4} fontSize="10" textAnchor="end">{i * 10}</text>;
+            label = <text key={`label-${i}`} x="25" y={y + 4} fontSize="10" textAnchor="end">{i * 10}</text>;
         }
         ticks.push(<line key={`tick-${i}`} x1="0" y1={y} x2={tickWidth} y2={y} stroke="currentColor" strokeWidth="1" />);
         if (label) {
