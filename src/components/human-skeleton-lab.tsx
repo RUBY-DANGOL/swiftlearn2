@@ -24,9 +24,12 @@ declare global {
   }
 }
 
+// TODO: Replace with your actual Echo3D API Key and Entry ID
 const ECHO3D_API_KEY = 'rough-surf-3701';
 const ECHO3D_ENTRY_ID = 'a62a6b2c-6338-4e08-958a-a621743f338d';
-const echo3dApiUrl = `https://api.echo3d.com/query?key=${ECHO3D_API_KEY}&entry=${ECHO3D_ENTRY_ID}`;
+
+// We use the 'get' endpoint to retrieve metadata including the direct storage link
+const echo3dApiUrl = `https://api.echo3d.com/get?key=${ECHO3D_API_KEY}&entry=${ECHO3D_ENTRY_ID}`;
 
 export function InteractiveSkeletonLab() {
   const [selectedBone, setSelectedBone] = useState<string>('None');
@@ -35,39 +38,42 @@ export function InteractiveSkeletonLab() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // This ensures the component only runs on the client, preventing SSR issues
     setIsClient(true);
   }, []);
 
   useEffect(() => {
     if (!isClient) return;
 
-    let objectUrl: string | null = null;
-
     const fetchModel = async () => {
       setIsLoading(true);
       try {
+        // Fetch metadata from Echo3D API
         const response = await fetch(echo3dApiUrl);
         if (!response.ok) {
-          throw new Error(`Failed to fetch model: ${response.statusText}`);
+          throw new Error(`Failed to fetch model metadata: ${response.statusText}`);
         }
-        const blob = await response.blob();
-        objectUrl = URL.createObjectURL(blob);
-        setModelSrc(objectUrl);
+        const data = await response.json();
+        
+        // Extract the storage ID for the GLB model
+        const storageID = data?.hologram?.storageID;
+        if (!storageID) {
+          throw new Error("Could not find storageID in the API response.");
+        }
+
+        // Construct the direct URL to the model file
+        const directModelUrl = `https://storage.echo3d.com/${ECHO3D_API_KEY}/${storageID}`;
+        setModelSrc(directModelUrl);
+
       } catch (error) {
         console.error("Error loading 3D model:", error);
-        setModelSrc(null);
+        setModelSrc(null); // Set to null on error to show the failure message
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchModel();
-
-    return () => {
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-      }
-    };
   }, [isClient]);
 
   const handleHotspotClick = (boneName: string) => {
