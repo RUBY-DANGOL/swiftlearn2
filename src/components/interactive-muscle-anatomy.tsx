@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Orbit } from 'lucide-react';
+import { Orbit, Loader2 } from 'lucide-react';
 import '@google/model-viewer';
 
 // TypeScript support for @google/model-viewer
@@ -24,8 +24,9 @@ declare global {
   }
 }
 
-// A publicly available muscle anatomy model URL. This approach is more reliable than fetching from the API at runtime.
-const MODEL_URL = 'https://storage.echo3d.com/deeppink-fire-1649/4b561e1f-402a-464a-8d19-959c9497f740.glb';
+// A publicly available anatomy model URL from the official model-viewer examples.
+// This is more reliable than fetching from a service that might not have CORS enabled.
+const MODEL_URL = 'https://cdn.glitch.global/e5c35b69-8919-4b8c-8973-23d219b51551/anatomy.glb?v=1680193895995';
 
 
 export function InteractiveMuscleAnatomy() {
@@ -49,6 +50,10 @@ export function InteractiveMuscleAnatomy() {
               camera-controls
               style={{ width: '100%', height: '100%' }}
             >
+             <div className="flex flex-col items-center justify-center h-full" slot="poster">
+                <Loader2 className="w-8 h-8 animate-spin" />
+                <span className="mt-2 text-muted-foreground">Loading 3D model...</span>
+              </div>
             </model-viewer>
         </div>
       </CardContent>
