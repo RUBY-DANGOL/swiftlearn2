@@ -11,7 +11,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { HumanSkeletonLab } from '@/components/human-skeleton-lab';
+import { InteractiveMuscleAnatomy } from '@/components/human-skeleton-lab';
 
 const grade12BiologySyllabus = [
     { 
@@ -122,7 +122,7 @@ export default function Grade12TopicPage() {
                     <TabsContent value="lab">
                         {topicSlug === 'human-biology' ? (
                             <div className="mt-6">
-                                <HumanSkeletonLab />
+                                <InteractiveMuscleAnatomy />
                             </div>
                         ) : (
                             <PlaceholderContent title="Virtual Lab Coming Soon" description={`Explore interactive experiments for ${topicName} in our virtual lab.`} />
