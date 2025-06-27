@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Orbit, Loader2 } from 'lucide-react';
+import { Orbit, Loader2, AlertCircle } from 'lucide-react';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import '@google/model-viewer';
 
 // TypeScript support for @google/model-viewer
@@ -24,10 +25,9 @@ declare global {
   }
 }
 
-// A publicly available anatomy model URL from the official model-viewer examples.
-// This is more reliable than fetching from a service that might not have CORS enabled.
-const MODEL_URL = 'https://cdn.glitch.global/e5c35b69-8919-4b8c-8973-23d219b51551/anatomy.glb?v=1680193895995';
-
+// NOTE: This now points to a local file in the `public` directory.
+// Make sure you have placed your .glb file at `public/muscle-anatomy.glb`.
+const MODEL_URL = '/muscle-anatomy.glb';
 
 export function InteractiveMuscleAnatomy() {
   return (
@@ -56,6 +56,13 @@ export function InteractiveMuscleAnatomy() {
               </div>
             </model-viewer>
         </div>
+        <Alert>
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Note for Developers</AlertTitle>
+          <AlertDescription>
+            This component loads a 3D model from the `/public` folder. Please place your `.glb` file at <code className="font-semibold text-foreground bg-muted p-1 rounded-sm">public/muscle-anatomy.glb</code> for it to display correctly.
+          </AlertDescription>
+        </Alert>
       </CardContent>
     </Card>
   );
