@@ -24,8 +24,8 @@ declare global {
   }
 }
 
-const ECHO3D_API_KEY = 'rough-surf-3701';
-const ECHO3D_ENTRY_ID = '657ed481-ba41-49f8-aabb-1bf96f298907';
+const ECHO3D_API_KEY = 'cold-sky-9333';
+const ECHO3D_ENTRY_ID = '3e743a6d-c5ae-443b-81e8-71e988220261';
 
 // We use the 'get' endpoint to retrieve metadata including the direct storage link
 const echo3dApiUrl = `https://api.echo3d.com/get?key=${ECHO3D_API_KEY}&entry=${ECHO3D_ENTRY_ID}`;
