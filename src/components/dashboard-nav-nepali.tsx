@@ -37,16 +37,17 @@ export function DashboardNavNepali() {
           : pathname.startsWith(item.href);
         return (
         <SidebarMenuItem key={item.href} className="mx-2">
-          <Link href={item.href} legacyBehavior passHref>
-            <SidebarMenuButton
-              isActive={isActive}
-              tooltip={item.label}
-              className="font-medium"
-            >
+          <SidebarMenuButton
+            asChild
+            isActive={isActive}
+            tooltip={item.label}
+            className="font-medium"
+          >
+            <Link href={item.href}>
               <item.icon />
               <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
-            </SidebarMenuButton>
-          </Link>
+            </Link>
+          </SidebarMenuButton>
         </SidebarMenuItem>
         )
       })}
