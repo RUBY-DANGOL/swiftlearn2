@@ -2,8 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Orbit, Loader2, Info } from 'lucide-react';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Orbit, Loader2 } from 'lucide-react';
 import '@google/model-viewer';
 
 // TypeScript support for @google/model-viewer
@@ -25,8 +24,9 @@ declare global {
   }
 }
 
-// The model will be served from the `public` folder.
-const LOCAL_MODEL_URL = '/muscle-anatomy.glb';
+// IMPORTANT: Replace this placeholder with the direct URL to your .glb file from your Vercel deployment.
+// It will look something like: "https://your-project-name.vercel.app/your-model-file.glb"
+const VERCEL_HOSTED_MODEL_URL = 'https://your-project.vercel.app/muscle-anatomy.glb';
 
 export function InteractiveMuscleAnatomy() {
   return (
@@ -41,16 +41,9 @@ export function InteractiveMuscleAnatomy() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
-        <Alert>
-          <Info className="h-4 w-4" />
-          <AlertTitle>Setup Required</AlertTitle>
-          <AlertDescription>
-            To view the model, please place your <b>muscle-anatomy.glb</b> file inside the <b>public</b> folder at the root of your project. If the model does not appear, the file may be missing.
-          </AlertDescription>
-        </Alert>
         <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-muted/30 flex items-center justify-center">
             <model-viewer
-              src={LOCAL_MODEL_URL}
+              src={VERCEL_HOSTED_MODEL_URL}
               alt="A 3D model of human muscle anatomy"
               auto-rotate
               camera-controls
