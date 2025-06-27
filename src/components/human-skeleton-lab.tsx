@@ -1,90 +1,94 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dna, MousePointerClick, MoveHorizontal } from 'lucide-react';
-import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
+import { Bone } from 'lucide-react';
+import '@google/model-viewer';
 
-const muscles = [
-  { id: 'deltoid', name: 'Deltoid', top: '25%', left: '36%' },
-  { id: 'pectoralis', name: 'Pectoralis Major', top: '30%', left: '45%' },
-  { id: 'biceps', name: 'Biceps Brachii', top: '35%', left: '55%' },
-  { id: 'abs', name: 'Rectus Abdominis', top: '45%', left: '50%' },
-  { id: 'quadriceps', name: 'Quadriceps Femoris', top: '60%', left: '44%' },
-  { id: 'tibialis', name: 'Tibialis Anterior', top: '80%', left: '42%' },
-];
+// TypeScript support for @google/model-viewer
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'model-viewer': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement> & {
+          src: string;
+          alt: string;
+          'camera-controls': boolean;
+          'auto-rotate': boolean;
+          style?: React.CSSProperties;
+          children?: React.ReactNode;
+        },
+        HTMLElement
+      >;
+    }
+  }
+}
 
-export function InteractiveMuscleAnatomy() {
-  const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
+// IMPORTANT: Replace with your actual Echo3D credentials
+const ECHO3D_API_KEY = 'YOUR_ECHO3D_API_KEY';
+const ECHO3D_ENTRY_ID = 'YOUR_SKELETON_ENTRY_ID';
+const modelUrl = `https://api.echo3d.com/query?key=${ECHO3D_API_KEY}&entry=${ECHO3D_ENTRY_ID}`;
 
+export function InteractiveSkeletonLab() {
+  const [selectedBone, setSelectedBone] = useState<string>('None');
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // This ensures the component only renders on the client, avoiding SSR issues with the web component.
+    setIsClient(true);
+  }, []);
+
+  const handleHotspotClick = (boneName: string) => {
+    setSelectedBone(boneName);
+  };
+  
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Dna className="w-6 h-6" />
-          Interactive Muscle Anatomy
+          <Bone className="w-6 h-6" />
+          Interactive Skeleton Lab
         </CardTitle>
         <CardDescription>
-          Drag the model to rotate it and click on the markers to identify different muscles.
+          Click on the hotspots to identify different bones of the human skeleton. Drag to rotate.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2"><MoveHorizontal className="w-5 h-5" /><span>Drag to Rotate</span></div>
-            <div className="flex items-center gap-2"><MousePointerClick className="w-5 h-5" /><span>Click to Identify</span></div>
-          </div>
-
-          <div className="w-full max-w-lg h-[600px] bg-muted/30 rounded-lg overflow-hidden relative border cursor-grab active:cursor-grabbing">
-            <motion.div
-              drag="x"
-              dragConstraints={{ left: -200, right: 200 }}
-              className="w-full h-full relative"
-            >
-              <Image
-                src="https://placehold.co/400x600.png"
-                alt="Human Muscle Anatomy"
-                data-ai-hint="muscle anatomy"
-                layout="fill"
-                objectFit="contain"
-                className="pointer-events-none"
-              />
-              {muscles.map((muscle) => (
-                <motion.button
-                  key={muscle.id}
-                  className="absolute w-4 h-4 rounded-full bg-primary/50 border-2 border-primary-foreground shadow-lg"
-                  style={{ top: muscle.top, left: muscle.left }}
-                  onHoverStart={() => setSelectedMuscle(muscle.name)}
-                  onHoverEnd={() => setSelectedMuscle(null)}
-                  onClick={() => setSelectedMuscle(muscle.name)}
-                  whileHover={{ scale: 2.5, zIndex: 10 }}
-                  whileTap={{ scale: 2 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
-                />
-              ))}
-            </motion.div>
-          </div>
-          
-          <div className="w-full max-w-lg h-16 flex items-center justify-center">
-            <AnimatePresence>
-              {selectedMuscle && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                >
-                  <Badge variant="secondary" className="text-lg font-semibold px-4 py-2">
-                    {selectedMuscle}
-                  </Badge>
-                </motion.div>
-              )}
-            </AnimatePresence>
-             {!selectedMuscle && (
-                <p className="text-muted-foreground">Hover over or click a marker to see the muscle name.</p>
-             )}
-          </div>
+      <CardContent className="flex flex-col items-center gap-4">
+        <div className="w-full text-center p-2 bg-muted rounded-md">
+            <span className="font-semibold">Selected Bone:</span> {selectedBone}
+        </div>
+        <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-muted/30">
+        {isClient ? (
+          <model-viewer
+            src={modelUrl}
+            alt="A 3D model of a human skeleton"
+            auto-rotate
+            camera-controls
+            style={{ width: '100%', height: '100%' }}
+          >
+            {/* Hotspots are positioned using 'data-position' which are 3D coordinates (x y z) */}
+            <div
+              className="w-4 h-4 rounded-full border-2 bg-red-500/70 border-white cursor-pointer"
+              slot="hotspot-skull"
+              data-position="0 1.6 0"
+              onClick={() => handleHotspotClick('Skull')}
+            ></div>
+            <div
+              className="w-4 h-4 rounded-full border-2 bg-blue-500/70 border-white cursor-pointer"
+              slot="hotspot-clavicle"
+              data-position="0.2 1.4 0.1"
+              onClick={() => handleHotspotClick('Clavicle')}
+            ></div>
+            <div
+              className="w-4 h-4 rounded-full border-2 bg-green-500/70 border-white cursor-pointer"
+              slot="hotspot-femur"
+              data-position="0.2 0.7 0"
+              onClick={() => handleHotspotClick('Femur')}
+            ></div>
+          </model-viewer>
+          ) : (
+            <div className="flex items-center justify-center h-full text-muted-foreground">Loading 3D Model...</div>
+          )}
         </div>
       </CardContent>
     </Card>
