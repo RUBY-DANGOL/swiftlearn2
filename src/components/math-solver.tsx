@@ -10,6 +10,9 @@ import { solveMathProblem } from '@/ai/flows/math-question-solver';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import { ScrollArea } from './ui/scroll-area';
 import { suggestVideos, type VideoSuggestion } from '@/ai/flows/video-suggester';
 
@@ -127,8 +130,8 @@ export function MathSolver() {
             <ScrollArea className="h-[600px] rounded-md border bg-background p-4">
               <ReactMarkdown
                 className="prose prose-sm dark:prose-invert max-w-none"
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[rehypeRaw, rehypeKatex]}
               >
                 {solution}
               </ReactMarkdown>
