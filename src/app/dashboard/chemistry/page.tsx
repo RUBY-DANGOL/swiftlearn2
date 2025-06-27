@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { FlaskConical, ArrowRight } from 'lucide-react';
+import { FlaskConical, ArrowRight, Beaker } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ChemistryPage() {
@@ -11,11 +11,11 @@ export default function ChemistryPage() {
             <FlaskConical className="w-8 h-8 text-primary" />
             Chemistry
           </CardTitle>
-          <CardDescription>Uncover the secrets of matter and its transformations. Select your grade to begin exploring the elements and their reactions.</CardDescription>
+          <CardDescription>Uncover the secrets of matter and its transformations. Select a category to begin exploring the elements and their reactions.</CardDescription>
         </CardHeader>
       </Card>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-3">
         <Link href="/dashboard/chemistry/grade-11" className="block hover:shadow-lg transition-shadow rounded-lg">
           <Card className="h-full">
             <CardHeader>
@@ -42,6 +42,21 @@ export default function ChemistryPage() {
             <CardContent>
               <div className="flex items-center justify-end font-medium text-primary">
                 View Syllabus <ArrowRight className="w-4 h-4 ml-2" />
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/dashboard/chemistry/lab" className="block hover:shadow-lg transition-shadow rounded-lg">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="font-headline text-xl">Virtual Lab</CardTitle>
+              <CardDescription>
+                Mix different chemicals in a safe, virtual environment to see spectacular reactions and learn about chemical safety.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+               <div className="flex items-center justify-end font-medium text-primary">
+                Enter Lab <Beaker className="w-4 h-4 ml-2" />
               </div>
             </CardContent>
           </Card>

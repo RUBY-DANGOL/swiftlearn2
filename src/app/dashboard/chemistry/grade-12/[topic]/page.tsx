@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, MessageCircle, HelpCircle, History, Beaker, FlaskConical } from 'lucide-react';
+import { BookOpen, MessageCircle, HelpCircle, History, FlaskConical } from 'lucide-react';
 
 const grade12ChemistrySyllabus = [
   { 
@@ -82,12 +82,11 @@ export default function Grade12TopicPage() {
             </CardHeader>
             <CardContent>
                 <Tabs defaultValue="notes" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
+                    <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
                         <TabsTrigger value="notes" className="gap-2"><BookOpen className="h-4 w-4" /> Notes</TabsTrigger>
                         <TabsTrigger value="chatbot" className="gap-2"><MessageCircle className="h-4 w-4" /> Chatbot</TabsTrigger>
                         <TabsTrigger value="quiz" className="gap-2"><HelpCircle className="h-4 w-4" /> Quiz</TabsTrigger>
                         <TabsTrigger value="past-questions" className="gap-2"><History className="h-4 w-4" /> Past Questions</TabsTrigger>
-                        <TabsTrigger value="lab" className="gap-2"><Beaker className="h-4 w-4" /> Lab</TabsTrigger>
                     </TabsList>
                     <TabsContent value="notes">
                         <PlaceholderContent title="Notes Coming Soon" description={`Notes for ${topicName} will be available here.`} />
@@ -100,9 +99,6 @@ export default function Grade12TopicPage() {
                     </TabsContent>
                     <TabsContent value="past-questions">
                         <PlaceholderContent title="Past Questions Coming Soon" description={`Practice with past questions related to ${topicName}.`} />
-                    </TabsContent>
-                    <TabsContent value="lab">
-                        <PlaceholderContent title="Virtual Lab Coming Soon" description={`Explore interactive experiments for ${topicName} in our virtual lab.`} />
                     </TabsContent>
                 </Tabs>
             </CardContent>
