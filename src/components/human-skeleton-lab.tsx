@@ -24,10 +24,15 @@ declare global {
   }
 }
 
-// IMPORTANT: Replace with your actual Echo3D credentials
-const ECHO3D_API_KEY = 'YOUR_ECHO3D_API_KEY';
-const ECHO3D_ENTRY_ID = 'YOUR_SKELETON_ENTRY_ID';
+// =================================================================
+// IMPORTANT: ACTION REQUIRED
+// To use your own 3D model from Echo3D, replace the placeholders
+// below with your actual API key and Entry ID.
+// =================================================================
+const ECHO3D_API_KEY = 'YOUR_ECHO3D_API_KEY_HERE';
+const ECHO3D_ENTRY_ID = 'YOUR_SKELETON_ENTRY_ID_HERE';
 const modelUrl = `https://api.echo3d.com/query?key=${ECHO3D_API_KEY}&entry=${ECHO3D_ENTRY_ID}`;
+// Note: If the model doesn't load, please double-check your credentials above.
 
 export function InteractiveSkeletonLab() {
   const [selectedBone, setSelectedBone] = useState<string>('None');
@@ -50,7 +55,7 @@ export function InteractiveSkeletonLab() {
           Interactive Skeleton Lab
         </CardTitle>
         <CardDescription>
-          Click on the hotspots to identify different bones of the human skeleton. Drag to rotate.
+          Click on the hotspots to identify different bones of the human skeleton. Drag to rotate, scroll to zoom.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
@@ -66,25 +71,49 @@ export function InteractiveSkeletonLab() {
             camera-controls
             style={{ width: '100%', height: '100%' }}
           >
-            {/* Hotspots are positioned using 'data-position' which are 3D coordinates (x y z) */}
-            <div
+            {/* Hotspots are positioned using 'data-position' which are 3D space coordinates (x y z) */}
+            <button
               className="w-4 h-4 rounded-full border-2 bg-red-500/70 border-white cursor-pointer"
               slot="hotspot-skull"
-              data-position="0 1.6 0"
+              data-position="0 1.62 0"
               onClick={() => handleHotspotClick('Skull')}
-            ></div>
-            <div
+            ></button>
+            <button
               className="w-4 h-4 rounded-full border-2 bg-blue-500/70 border-white cursor-pointer"
               slot="hotspot-clavicle"
               data-position="0.2 1.4 0.1"
               onClick={() => handleHotspotClick('Clavicle')}
-            ></div>
-            <div
+            ></button>
+             <button
+              className="w-4 h-4 rounded-full border-2 bg-yellow-500/70 border-white cursor-pointer"
+              slot="hotspot-ribs"
+              data-position="0 1.25 0"
+              onClick={() => handleHotspotClick('Rib Cage')}
+            ></button>
+            <button
+              className="w-4 h-4 rounded-full border-2 bg-purple-500/70 border-white cursor-pointer"
+              slot="hotspot-humerus"
+              data-position="-0.3 1.2 0"
+              onClick={() => handleHotspotClick('Humerus')}
+            ></button>
+            <button
+              className="w-4 h-4 rounded-full border-2 bg-orange-500/70 border-white cursor-pointer"
+              slot="hotspot-pelvis"
+              data-position="0 0.9 0"
+              onClick={() => handleHotspotClick('Pelvis')}
+            ></button>
+            <button
               className="w-4 h-4 rounded-full border-2 bg-green-500/70 border-white cursor-pointer"
               slot="hotspot-femur"
-              data-position="0.2 0.7 0"
+              data-position="0.15 0.7 0"
               onClick={() => handleHotspotClick('Femur')}
-            ></div>
+            ></button>
+             <button
+              className="w-4 h-4 rounded-full border-2 bg-pink-500/70 border-white cursor-pointer"
+              slot="hotspot-tibia"
+              data-position="0.15 0.2 0"
+              onClick={() => handleHotspotClick('Tibia')}
+            ></button>
           </model-viewer>
           ) : (
             <div className="flex items-center justify-center h-full text-muted-foreground">Loading 3D Model...</div>
