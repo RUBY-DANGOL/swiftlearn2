@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Orbit, Loader2, AlertCircle } from 'lucide-react';
+import { Orbit, Loader2, Info } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import '@google/model-viewer';
 
@@ -12,7 +12,7 @@ declare global {
     interface IntrinsicElements {
       'model-viewer': React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement> & {
-          src?: string;
+          src: string;
           alt: string;
           'camera-controls': boolean;
           'auto-rotate': boolean;
@@ -25,8 +25,8 @@ declare global {
   }
 }
 
-// User-provided Google Drive download link.
-const MODEL_URL = 'https://drive.usercontent.google.com/u/0/uc?id=134Ff-9DdBqK3ONII-9pnnD07k_mvs883&export=download';
+// The model will be served from the `public` folder.
+const LOCAL_MODEL_URL = '/muscle-anatomy.glb';
 
 export function InteractiveMuscleAnatomy() {
   return (
@@ -41,9 +41,16 @@ export function InteractiveMuscleAnatomy() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
+        <Alert>
+          <Info className="h-4 w-4" />
+          <AlertTitle>Setup Required</AlertTitle>
+          <AlertDescription>
+            To view the model, please place your <b>muscle-anatomy.glb</b> file inside the <b>public</b> folder at the root of your project. If the model does not appear, the file may be missing.
+          </AlertDescription>
+        </Alert>
         <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-muted/30 flex items-center justify-center">
             <model-viewer
-              src={MODEL_URL}
+              src={LOCAL_MODEL_URL}
               alt="A 3D model of human muscle anatomy"
               auto-rotate
               camera-controls
@@ -55,13 +62,6 @@ export function InteractiveMuscleAnatomy() {
               </div>
             </model-viewer>
         </div>
-        <Alert>
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Note on Google Drive Links</AlertTitle>
-          <AlertDescription>
-            This component is attempting to load your model from Google Drive. Please be aware that this method can sometimes be unreliable. For best results in the future, using a raw link from a service like GitHub is recommended.
-          </AlertDescription>
-        </Alert>
       </CardContent>
     </Card>
   );
