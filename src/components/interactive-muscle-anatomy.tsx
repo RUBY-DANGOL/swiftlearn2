@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Orbit, Loader2 } from 'lucide-react';
 import '@google/model-viewer';
@@ -27,6 +27,50 @@ declare global {
 const MODEL_URL = '/namedskeleton.glb';
 
 export function InteractiveMuscleAnatomy() {
+  const modelViewerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const modelViewer = modelViewerRef.current;
+    if (!modelViewer) {
+      return;
+    }
+
+    const handleClick = (event: any) => {
+      const { node } = event.detail;
+
+      // Remove any existing hotspots
+      const existingHotspot = modelViewer.querySelector('.hotspot');
+      if (existingHotspot) {
+        modelViewer.removeChild(existingHotspot);
+      }
+      
+      // Do nothing if the click is not on a named node
+      if (!node) {
+        return;
+      }
+
+      const hotspot = document.createElement('button');
+      hotspot.slot = `hotspot-${node.name}`;
+      hotspot.className = 'hotspot';
+      hotspot.dataset.position = event.detail.position.toString();
+      hotspot.dataset.normal = event.detail.normal.toString();
+      
+      // Clean up the name for display
+      let boneName = node.name.replace(/_corr/g, '').replace(/_/g, ' ');
+      boneName = boneName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+
+      hotspot.textContent = boneName;
+      modelViewer.appendChild(hotspot);
+    };
+
+    modelViewer.addEventListener('click', handleClick);
+
+    // Cleanup
+    return () => {
+      modelViewer.removeEventListener('click', handleClick);
+    };
+  }, []);
+
   return (
     <Card>
       <CardHeader>
@@ -35,14 +79,33 @@ export function InteractiveMuscleAnatomy() {
           Interactive Skeleton Anatomy
         </CardTitle>
         <CardDescription>
-          Explore a 3D model of a human skeleton. Drag to rotate, scroll to zoom.
-          <br />
-          <span className="text-xs text-destructive">(Note: Make sure 'namedskeleton.glb' is in the 'public' folder)</span>
+          Explore a 3D model of a human skeleton. **Click on a bone to see its name.** Drag to rotate, scroll to zoom.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
+        <style>
+          {`
+            .hotspot {
+              background: rgba(255, 255, 255, 0.9);
+              border: 1px solid #ddd;
+              border-radius: 8px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+              color: #000;
+              display: block;
+              font-family: sans-serif;
+              font-size: 14px;
+              font-weight: 600;
+              padding: 8px 12px;
+              pointer-events: none;
+              transform: translate(-50%, -50%);
+              white-space: nowrap;
+            }
+          `}
+        </style>
         <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-muted/30 flex items-center justify-center">
             <model-viewer
+              // @ts-ignore
+              ref={modelViewerRef}
               src={MODEL_URL}
               alt="A 3D model of a human skeleton"
               auto-rotate
@@ -51,7 +114,7 @@ export function InteractiveMuscleAnatomy() {
             >
              <div className="flex flex-col items-center justify-center h-full" slot="poster">
                 <Loader2 className="w-8 h-8 animate-spin" />
-                <span className="mt-2 text-muted-foreground">Loading 3D model...</span>
+                <span className="text-muted-foreground">Loading 3D model...</span>
               </div>
             </model-viewer>
         </div>
