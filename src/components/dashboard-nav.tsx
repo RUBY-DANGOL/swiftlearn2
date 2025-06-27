@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 import {
   Home,
   Atom,
@@ -26,31 +27,37 @@ const navItems = [
   { href: '/dashboard/computers', label: 'Computer Science', icon: Code },
 ];
 
-export function DashboardNav() {
+function NavMenuItem({ item }: { item: typeof navItems[0] }) {
   const pathname = usePathname();
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    setIsActive(item.exact ? pathname === item.href : pathname.startsWith(item.href));
+  }, [pathname, item.href, item.exact]);
 
   return (
+    <SidebarMenuItem className="mx-2">
+      <SidebarMenuButton
+        asChild
+        isActive={isActive}
+        tooltip={item.label}
+        className="font-medium"
+      >
+        <Link href={item.href}>
+          <item.icon />
+          <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+}
+
+export function DashboardNav() {
+  return (
     <SidebarMenu>
-      {navItems.map((item) => {
-        const isActive = item.exact
-          ? pathname === item.href
-          : pathname.startsWith(item.href);
-        return (
-        <SidebarMenuItem key={item.href} className="mx-2">
-          <SidebarMenuButton
-            asChild
-            isActive={isActive}
-            tooltip={item.label}
-            className="font-medium"
-          >
-            <Link href={item.href}>
-              <item.icon />
-              <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        )
-      })}
+      {navItems.map((item) => (
+        <NavMenuItem key={item.href} item={item} />
+      ))}
     </SidebarMenu>
   );
 }

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 import {
   Home,
   Atom,
@@ -26,31 +27,37 @@ const navItems = [
   { href: '/dashboard-nepali/computers', label: 'कम्प्युटर विज्ञान', icon: Code },
 ];
 
-export function DashboardNavNepali() {
+function NavMenuItemNepali({ item }: { item: typeof navItems[0] }) {
   const pathname = usePathname();
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    setIsActive(item.exact ? pathname === item.href : pathname.startsWith(item.href));
+  }, [pathname, item.href, item.exact]);
 
   return (
+    <SidebarMenuItem className="mx-2">
+      <SidebarMenuButton
+        asChild
+        isActive={isActive}
+        tooltip={item.label}
+        className="font-medium"
+      >
+        <Link href={item.href}>
+          <item.icon />
+          <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+}
+
+export function DashboardNavNepali() {
+  return (
     <SidebarMenu>
-      {navItems.map((item) => {
-        const isActive = item.exact
-          ? pathname === item.href
-          : pathname.startsWith(item.href);
-        return (
-        <SidebarMenuItem key={item.href} className="mx-2">
-          <SidebarMenuButton
-            asChild
-            isActive={isActive}
-            tooltip={item.label}
-            className="font-medium"
-          >
-            <Link href={item.href}>
-              <item.icon />
-              <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        )
-      })}
+      {navItems.map((item) => (
+        <NavMenuItemNepali key={item.href} item={item} />
+      ))}
     </SidebarMenu>
   );
 }
