@@ -22,6 +22,7 @@ export type SolveMathProblemInput = z.infer<typeof SolveMathProblemInputSchema>;
 
 const SolveMathProblemOutputSchema = z.object({
   solution: z.string().describe('The step-by-step solution to the math problem, formatted in Markdown.'),
+  topic: z.string().describe('The core mathematical topic or concept identified in the problem (e.g., "Quadratic Equations", "Integration by Parts").'),
 });
 export type SolveMathProblemOutput = z.infer<typeof SolveMathProblemOutputSchema>;
 
@@ -33,12 +34,15 @@ const prompt = ai.definePrompt({
   name: 'solveMathProblemPrompt',
   input: {schema: SolveMathProblemInputSchema},
   output: {schema: SolveMathProblemOutputSchema},
-  prompt: `You are an expert math tutor. Your task is to solve the math problem presented in the provided image or document.
+  prompt: `You are an expert math tutor. Your task is to analyze the math problem presented in the provided image or document.
 
-  Provide a detailed, step-by-step solution. Explain the reasoning behind each step clearly. Format your final answer using Markdown, including LaTeX for mathematical expressions (e.g., use $...$ for inline math and $$...$$ for block math).
+1.  **Identify the Topic:** First, identify the primary mathematical topic or concept this problem is about (e.g., "Quadratic Equations", "Integration by Parts", "Newton's Laws of Motion").
+2.  **Solve the Problem:** Provide a detailed, step-by-step solution. Explain the reasoning behind each step clearly. Format your final answer using Markdown, including LaTeX for mathematical expressions (e.g., use $...$ for inline math and $$...$$ for block math).
 
-  Problem:
-  {{media url=mediaDataUri}}`,
+Return the topic and the solution in the specified format.
+
+Problem:
+{{media url=mediaDataUri}}`,
 });
 
 const solveMathProblemFlow = ai.defineFlow(

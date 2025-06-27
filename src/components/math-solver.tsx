@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Loader2, UploadCloud } from 'lucide-react';
+import { Loader2, UploadCloud, Youtube, ArrowUpRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { ScrollArea } from './ui/scroll-area';
+import { suggestVideos, type VideoSuggestion } from '@/ai/flows/video-suggester';
 
 const fileToDataUri = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -27,6 +28,11 @@ export function MathSolver() {
   const [isLoading, setIsLoading] = useState(false);
   const [fileName, setFileName] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  
+  const [mathTopic, setMathTopic] = useState('');
+  const [videoSuggestions, setVideoSuggestions] = useState<VideoSuggestion[]>([]);
+  const [isSuggesting, setIsSuggesting] = useState(false);
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -42,6 +48,8 @@ export function MathSolver() {
         setFile(selectedFile);
         setFileName(selectedFile.name);
         setSolution('');
+        setMathTopic('');
+        setVideoSuggestions([]);
     }
   };
 
@@ -52,16 +60,34 @@ export function MathSolver() {
     }
     setIsLoading(true);
     setSolution('');
+    setMathTopic('');
+    setVideoSuggestions([]);
     
     try {
       const mediaDataUri = await fileToDataUri(file);
       const result = await solveMathProblem({ mediaDataUri });
       setSolution(result.solution);
+      setMathTopic(result.topic);
     } catch (error) {
       console.error(error);
       toast({ variant: 'destructive', title: 'Error', description: 'Failed to solve the problem. Please try again.' });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleSuggestVideos = async () => {
+    if (!mathTopic) return;
+    setIsSuggesting(true);
+    setVideoSuggestions([]);
+    try {
+      const result = await suggestVideos({ topic: mathTopic });
+      setVideoSuggestions(result.suggestions);
+    } catch (error) {
+      console.error(error);
+      toast({ variant: 'destructive', title: 'Error', description: 'Failed to suggest videos. Please try again.' });
+    } finally {
+      setIsSuggesting(false);
     }
   };
 
@@ -110,6 +136,54 @@ export function MathSolver() {
           </CardContent>
         </Card>
       )}
+
+      {solution && mathTopic && (
+        <Card>
+            <CardHeader>
+                <CardTitle>Need more help with "{mathTopic}"?</CardTitle>
+                <CardDescription>Click the button below to get AI-suggested YouTube tutorials for this topic.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Button onClick={handleSuggestVideos} disabled={isSuggesting}>
+                    {isSuggesting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Youtube className="mr-2 h-4 w-4" />}
+                    Suggest Videos
+                </Button>
+
+                {isSuggesting && (
+                    <div className="mt-4 flex items-center gap-2 text-muted-foreground">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Finding the best videos for you...
+                    </div>
+                )}
+
+                {videoSuggestions.length > 0 && (
+                    <div className="mt-6 space-y-4">
+                        <h4 className="font-semibold">Recommended Tutorials:</h4>
+                        <ul className="space-y-3">
+                            {videoSuggestions.map((suggestion, index) => (
+                                <li key={index}>
+                                    <a
+                                        href={`https://www.youtube.com/results?search_query=${encodeURIComponent(suggestion.searchQuery)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-start gap-3 border p-4 rounded-lg hover:bg-muted/50 transition-colors"
+                                    >
+                                        <Youtube className="h-6 w-6 text-red-500 mt-1 flex-shrink-0" />
+                                        <div className="flex-grow">
+                                            <p className="font-bold text-primary">{suggestion.title}</p>
+                                            <p className="text-sm text-muted-foreground">{suggestion.description}</p>
+                                        </div>
+                                        <ArrowUpRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </CardContent>
+        </Card>
+      )}
+
     </div>
   );
 }
